@@ -1,13 +1,15 @@
 package de.micromata.confluence.rest.core.misc;
 
 /**
- * Author: Christian Schulze (c.schulze@micromata.de)
- * Date: 04.07.2016
+ * Authors: Christian Schulze (c.schulze@micromata.de), Martin Böhmer (mb@itboehmer.de)
+ * Created: 04.07.2016
+ * Mdodified: 19.04.2017
  * Project: ConfluenceTransferPlugin
  */
 public enum ExpandField {
     SPACE("space"),
     BODY_VIEW("body.view"),
+    BODY_STORAGE("body.storage"),
     VERSION("version"),
     CONTAINER("container"),
     HISTORY("history"),
