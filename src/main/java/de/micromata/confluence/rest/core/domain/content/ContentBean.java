@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Author: Christian Schulze (c.schulze@micromata.de)
- * Date: 04.07.2016
+ * Authors: Christian Schulze (c.schulze@micromata.de), Martin Böhmer (mb@itboehmer.de)
+ * Created: 04.07.2016
+ * Modified: 19.04.2017
  * Project: ConfluenceTransferPlugin
  */
 public class ContentBean extends BaseBean {
@@ -53,6 +54,13 @@ public class ContentBean extends BaseBean {
 
     @Expose
     private RestrictionsBean restrictions;
+
+    public ContentBean() {
+    }
+    
+    public ContentBean(String id) {
+        super(id);
+    }
 
     public List<AncestorBean> getAncestors() {
         return ancestors;
