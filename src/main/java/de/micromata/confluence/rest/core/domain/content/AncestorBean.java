@@ -1,23 +1,18 @@
 package de.micromata.confluence.rest.core.domain.content;
 
 import com.google.gson.annotations.Expose;
-import de.micromata.confluence.rest.core.domain.common.LinksBean;
+import de.micromata.confluence.rest.core.domain.BaseBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Author: Christian Schulze (c.schulze@micromata.de)
- * Date: 04.07.2016
+ * Authors: Christian Schulze (c.schulze@micromata.de), Martin Böhmer (mb@itboehmer.de)
+ * Created: 04.07.2016
+ * Modified: 19.04.2017
  * Project: ConfluenceTransferPlugin
  */
-public class AncestorBean {
-
-    @Expose
-    private String id;
-
-    @Expose
-    private String type;
+public class AncestorBean extends BaseBean {
 
     @Expose
     private String status;
@@ -46,8 +41,12 @@ public class AncestorBean {
     @Expose
     private RestrictionsBean restrictions;
 
-    @Expose
-    private LinksBean links;
+    public AncestorBean() {
+    }
+    
+    public AncestorBean(String id) {
+        super(id);
+    }
 
     public List<AncestorBean> getAncestors() {
         return ancestors;
@@ -89,22 +88,6 @@ public class AncestorBean {
         this.descendants = descendants;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public LinksBean getLinks() {
-        return links;
-    }
-
-    public void setLinks(LinksBean links) {
-        this.links = links;
-    }
-
     public MetadataBean getMetadata() {
         return metadata;
     }
@@ -136,12 +119,5 @@ public class AncestorBean {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
+    
 }
