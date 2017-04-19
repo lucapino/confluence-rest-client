@@ -5,3 +5,4 @@ bin/
 .classpath
 .settings/
 .project
+/nbactions.xml
