@@ -1,6 +1,7 @@
 package de.micromata.confluence.rest.core;
 
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import de.micromata.confluence.rest.ConfluenceRestClient;
 import de.micromata.confluence.rest.client.ContentClient;
 import de.micromata.confluence.rest.core.domain.content.ContentBean;
@@ -10,6 +11,11 @@ import de.micromata.confluence.rest.core.misc.ContentType;
 import de.micromata.confluence.rest.core.misc.RestException;
 import de.micromata.confluence.rest.core.util.HttpMethodFactory;
 import de.micromata.confluence.rest.core.util.URIHelper;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
@@ -26,10 +32,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.FileEntity;
+import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 /**
- * Author: Christian Schulze (c.schulze@micromata.de)
- * Date: 04.07.2016
+ * Authors: Christian Schulze (c.schulze@micromata.de), Martin Böhmer (mb@itboehmer.de)
+ * Created: 04.07.2016
+ * Modified: 19.04.2016
  * Project: ConfluenceTransferPlugin
  */
 public class ContentClientImpl extends BaseClient implements ContentClient {
@@ -119,4 +132,31 @@ public class ContentClientImpl extends BaseClient implements ContentClient {
             }
         });
     }
+
+    public Future<ContentBean> createContent(ContentBean content) throws URISyntaxException {
+        // Encode
+        String body = gson.toJson(content);
+        // Request
+        return executorService.submit(() -> {
+            URIBuilder uriBuilder = URIHelper.buildPath(baseUri, CONTENT);
+            HttpPost method = HttpMethodFactory.createPostMethod(uriBuilder.build(), body);
+            CloseableHttpResponse response = client.execute(method, clientContext);
+            int statusCode = response.getStatusLine().getStatusCode();
+            // Decode
+            if (statusCode == HttpURLConnection.HTTP_OK) {
+                JsonReader jsonReader = getJsonReader(response);
+                ContentBean result = gson.fromJson(jsonReader, ContentBean.class);
+                method.releaseConnection();
+                return result;
+            } else if (statusCode == HttpURLConnection.HTTP_UNAUTHORIZED || statusCode == HttpURLConnection.HTTP_FORBIDDEN) {
+                return null;
+            } else {
+                RestException restException = new RestException(response);
+                response.close();
+                method.releaseConnection();
+                throw restException;
+            }
+        });
+    }
+
 }
