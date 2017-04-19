@@ -1,5 +1,6 @@
 package de.micromata.confluence.rest.client;
 
+import de.micromata.confluence.rest.core.domain.content.AttachmentBean;
 import de.micromata.confluence.rest.core.domain.content.ContentBean;
 import de.micromata.confluence.rest.core.domain.content.ContentResultsBean;
 import de.micromata.confluence.rest.core.misc.ContentStatus;
@@ -61,7 +62,16 @@ public interface ContentClient {
      *
      * @param content The content to create.
      * @return A {@link Future} with the {@link ContentBean} representing the created page. Use this instance to continue working with the content.
-	*/
+	 */
     public Future<ContentBean> createContent(ContentBean content) throws URISyntaxException;
+	
+	/**
+     * Uploads the provided attachment to content (page or blogpost).
+     *
+     * @param attachment The attachement to upload.
+	 * @param parentContent The content (page or blogpost) to upload the attachment to.
+     * @return A {@link Future} with the {@link AttachmentBean} representing the uploaded attachement. Use this instance to continue working with the attachment.
+	 */
+	public Future<AttachmentBean> uploadAttachment(AttachmentBean attachment, ContentBean parentContent) throws URISyntaxException;
     
 }
