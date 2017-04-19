@@ -33,12 +33,17 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 
 /**
- * Created by cschulc on 01.07.2016.
+ * Client to interact with Confluence server's REST API.
+ *
+ * Author: Christian Schulze (c.schulze@micromata.de), Martin Böhmer (mb@itboehmer.de)
+ * Created: 01.07.2016
+ * Modified: 19.04.2017
+ * Project: ConfluenceTransferPlugin
  */
 public class ConfluenceRestClient implements RestPathConstants, RestParamConstants {
-
 
     private static final String HTTP = "http";
     private static final String HTTPS = "https";
@@ -68,7 +73,8 @@ public class ConfluenceRestClient implements RestPathConstants, RestParamConstan
         return connect(uri, username, password, null);
     }
 
-    private int connect(URI uri, String username, String password, HttpHost procxyHost) throws URISyntaxException, IOException {
+    public int connect(URI uri, String username, String password, HttpHost procxyHost) throws URISyntaxException, IOException {
+        this.proxy = procxyHost;
         this.username = username;
         String host = uri.getHost();
         int port = getPort(uri.toURL());
@@ -79,9 +85,13 @@ public class ConfluenceRestClient implements RestPathConstants, RestParamConstan
         credsProvider.setCredentials(
                 new AuthScope(target.getHostName(), target.getPort()),
                 new UsernamePasswordCredentials(username, password));
-        httpclient = HttpClients.custom()
-                .setDefaultCredentialsProvider(credsProvider)
-                .build();
+        HttpClientBuilder clientBuilder = HttpClients.custom()
+                .setDefaultCredentialsProvider(credsProvider);
+        if (this.proxy != null) {
+            DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(this.proxy);
+            clientBuilder.setRoutePlanner(routePlanner);
+        }
+        httpclient = clientBuilder.build();
         // Create AuthCache instance
         AuthCache authCache = new BasicAuthCache();
         // Generate BASIC scheme object and add it to the local
