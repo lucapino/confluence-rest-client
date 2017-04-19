@@ -4,6 +4,9 @@ import de.micromata.confluence.rest.core.domain.content.ContentBean;
 import de.micromata.confluence.rest.core.domain.content.ContentResultsBean;
 import de.micromata.confluence.rest.core.misc.ContentStatus;
 import de.micromata.confluence.rest.core.misc.ContentType;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import java.net.URISyntaxException;
 import java.util.Date;
@@ -13,8 +16,9 @@ import java.util.concurrent.Future;
 /**
  * Client to receive Content from a confluence server.
  *
- * Author: Christian Schulze (c.schulze@micromata.de)
- * Date: 04.07.2016
+ * Authors: Christian Schulze (c.schulze@micromata.de), Martin Böhmer (mb@itboehmer.de)
+ * Created: 04.07.2016
+ * Modified: 19.04.2017
  * Project: ConfluenceTransferPlugin
  */
 public interface ContentClient {
@@ -51,4 +55,13 @@ public interface ContentClient {
                                           List<String> expand,
                                           int start,
                                           int limit) throws URISyntaxException;
+    
+    /**
+     * Creates the provided content.
+     *
+     * @param content The content to create.
+     * @return A {@link Future} with the {@link ContentBean} representing the created page. Use this instance to continue working with the content.
+	*/
+    public Future<ContentBean> createContent(ContentBean content) throws URISyntaxException;
+    
 }
