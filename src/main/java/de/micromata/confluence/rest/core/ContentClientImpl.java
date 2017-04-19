@@ -4,6 +4,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import de.micromata.confluence.rest.ConfluenceRestClient;
 import de.micromata.confluence.rest.client.ContentClient;
+import de.micromata.confluence.rest.core.domain.content.AttachmentBean;
 import de.micromata.confluence.rest.core.domain.content.ContentBean;
 import de.micromata.confluence.rest.core.domain.content.ContentResultsBean;
 import de.micromata.confluence.rest.core.misc.ContentStatus;
@@ -146,6 +147,48 @@ public class ContentClientImpl extends BaseClient implements ContentClient {
             if (statusCode == HttpURLConnection.HTTP_OK) {
                 JsonReader jsonReader = getJsonReader(response);
                 ContentBean result = gson.fromJson(jsonReader, ContentBean.class);
+                method.releaseConnection();
+                return result;
+            } else if (statusCode == HttpURLConnection.HTTP_UNAUTHORIZED || statusCode == HttpURLConnection.HTTP_FORBIDDEN) {
+                return null;
+            } else {
+                RestException restException = new RestException(response);
+                response.close();
+                method.releaseConnection();
+                throw restException;
+            }
+        });
+    }
+	
+	public Future<AttachmentBean> uploadAttachment(AttachmentBean attachment, ContentBean parentContent) throws URISyntaxException {
+        URIBuilder uriBuilder = URIHelper.buildPath(baseUri, CONTENT, parentContent.getId(), ATTACHMENT);
+        System.out.println(uriBuilder.build().toString());
+
+        StringBuilder formPart = new StringBuilder();
+        formPart.append("file=");
+        formPart.append(attachment.getTitle());
+        if (attachment.getExtensions() != null && attachment.getExtensions().getComment() != null) {
+            formPart.append("\n");
+            formPart.append("comment=");
+            formPart.append(attachment.getExtensions().getComment());
+        }
+
+        HttpEntity httpEntity = MultipartEntityBuilder.create()
+                .setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
+                .addTextBody("form", formPart.toString())
+                .addBinaryBody("upload", attachment.getInputStream()).build();
+        HttpPost method = new HttpPost(uriBuilder.build());
+        method.setEntity(httpEntity);
+        method.addHeader("X-Atlassian-Token", "no-check");
+        
+        // Request
+        return executorService.submit(() -> {
+            CloseableHttpResponse response = client.execute(method, clientContext);
+            int statusCode = response.getStatusLine().getStatusCode();
+            // Decode
+            if (statusCode == HttpURLConnection.HTTP_OK) {
+                JsonReader jsonReader = getJsonReader(response);
+                AttachmentBean result = gson.fromJson(jsonReader, AttachmentBean.class);
                 method.releaseConnection();
                 return result;
             } else if (statusCode == HttpURLConnection.HTTP_UNAUTHORIZED || statusCode == HttpURLConnection.HTTP_FORBIDDEN) {

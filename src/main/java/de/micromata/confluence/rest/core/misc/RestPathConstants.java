@@ -1,7 +1,10 @@
 package de.micromata.confluence.rest.core.misc;
 
 /**
- * Created by cschulc on 01.07.2016.
+ * Authors: Christian Schulze (c.schulze@micromata.de), Martin Böhmer (mb@itboehmer.de)
+ * Created: 01.07.2016
+ * Modified: 19.04.2017
+ * Project: ConfluenceTransferPlugin
  */
 public interface RestPathConstants {
 
@@ -18,4 +21,6 @@ public interface RestPathConstants {
     String CONTENT = "/content";
 
     String SEARCH = "/search";
+    
+    String ATTACHMENT = "/child/attachment";
 }
