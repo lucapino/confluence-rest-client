@@ -52,7 +52,7 @@ public abstract class BaseClient implements RestParamConstants, RestPathConstant
     protected final URI baseUri;
     protected final ExecutorService executorService;
 
-    protected Gson gson	= new GsonBuilder()
+    protected Gson gson = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
             .registerTypeAdapter(CqlSearchResult.class, new CqlSearchResultDeserializer())
             .create();
@@ -76,6 +76,10 @@ public abstract class BaseClient implements RestParamConstants, RestPathConstant
 
     protected URIBuilder buildPath(String... paths) {
         return URIHelper.buildPath(baseUri, paths);
+    }
+
+    protected URIBuilder buildNonRestPath(String... paths) {
+        return URIHelper.buildPath(this.confluenceRestClient.getConfluenceBaseUri(), paths);
     }
 
     protected JsonReader getJsonReader(CloseableHttpResponse response) throws IOException {

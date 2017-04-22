@@ -63,6 +63,7 @@ public class ConfluenceRestClient implements RestPathConstants, RestParamConstan
 
     protected final ExecutorService executorService;
 
+    private URI confluenceBaseUri;
     private URI baseUri;
     private String username = StringUtils.EMPTY;
     private CloseableHttpClient httpclient;
@@ -87,6 +88,7 @@ public class ConfluenceRestClient implements RestPathConstants, RestParamConstan
     }
 
     public int connect(URI uri, String username, String password, HttpHost procxyHost) throws URISyntaxException, IOException {
+        this.confluenceBaseUri = uri;
         this.proxy = procxyHost;
         this.username = username;
         String host = uri.getHost();
@@ -184,6 +186,10 @@ public class ConfluenceRestClient implements RestPathConstants, RestParamConstan
 
     public URI getBaseUri() {
         return baseUri;
+    }
+
+    public URI getConfluenceBaseUri() {
+        return confluenceBaseUri;
     }
 
     public String getUsername() {

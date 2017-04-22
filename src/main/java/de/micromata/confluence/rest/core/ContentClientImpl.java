@@ -156,21 +156,30 @@ public class ContentClientImpl extends BaseClient implements ContentClient {
         });
     }
 
+    @Override
     public Future<InputStream> downloadAttachement(AttachmentBean attachment) {
         // Check input
         if (attachment.getId() == null) {
-            throw new IllegalArgumentException("ID cannot be null");
+            throw new IllegalArgumentException("ID of the attachment cannot be null");
         }
         if (attachment.getTitle() == null) {
-            throw new IllegalArgumentException("Title cannot be null");
+            throw new IllegalArgumentException("Title of the attachment cannot be null");
         }
         return executorService.submit(() -> {
-            // URI
-            String downloadUriPath = String.format(DOWNLOAD_ATTACHMENT, attachment.getId(), attachment.getTitle());
-            URI uri = buildPath(downloadUriPath).build();
+            // Determine download URI
+            String downloadUriPath = null;
+            if (attachment.getLinks() != null) {
+                // Provided
+                downloadUriPath = attachment.getLinks().getDownload();
+            } else {
+                // Not Provided
+                Future<ContentBean> future = getContentById(attachment.getId(), 0, null);
+                ContentBean attachmentContent = future.get();
+                downloadUriPath = attachmentContent.getLinks().getDownload();
+            }
+            URI uri = buildNonRestPath(downloadUriPath).build();
             // Request
             HttpGet method = HttpMethodFactory.createGetMethodForDownload(uri);
-            CloseableHttpResponse response = client.execute(method, clientContext);
             return executeRequest(method);
         });
     }

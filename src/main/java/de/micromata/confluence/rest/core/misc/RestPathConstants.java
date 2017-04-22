@@ -38,5 +38,4 @@ public interface RestPathConstants {
 
     String CONTENT_ATTACHMENT = CONTENT + "/%1$s/child/attachment";
 
-    String DOWNLOAD_ATTACHMENT = "/download/attachments/%1$s/%2$s?api=v2";
 }
