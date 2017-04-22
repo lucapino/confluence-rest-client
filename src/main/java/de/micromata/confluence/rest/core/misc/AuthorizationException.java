@@ -1,6 +1,5 @@
 /**
- * Copyright 2016 Micromata GmbH
- * Modifications Copyright 2017 Martin Böhmer
+ * Copyright 2017 Martin Böhmer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +15,17 @@
  */
 package de.micromata.confluence.rest.core.misc;
 
+import org.apache.http.client.methods.CloseableHttpResponse;
+
 /**
- * @author Christian Schulze (c.schulze@micromata.de)
  * @author Martin Böhmer (mb@itboehmer.de)
  */
-public enum ContentType {
-    PAGE("page"),
-    BLOGPOST("blogpost"),
-    ATTACHMENT("attachment");
+public class AuthorizationException extends RestException {
 
-    String name;
+    private static final long serialVersionUID = -184282162127530712L;
 
-    ContentType(String name) {
-        this.name = name;
+    public AuthorizationException(CloseableHttpResponse response) {
+        super(response);
     }
 
-    public String getName() {
-        return name;
-    }
 }

@@ -1,36 +1,34 @@
+/**
+ * Copyright 2017 Martin Böhmer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package de.micromata.confluence.rest.core.domain.content;
 
-import com.google.gson.annotations.Expose;
-import de.micromata.confluence.rest.core.domain.BaseBean;
-import de.micromata.confluence.rest.core.domain.space.SpaceBean;
+import de.micromata.confluence.rest.client.ContentClient;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 /**
- * Author: Martin Böhmer (kontakt@itboehmer.de)
- * Created: 19.04.2017
- * Project: ConfluenceTransferPlugin
+ * @author Martin Böhmer (mb@itboehmer.de)
  */
-public class AttachmentBean extends BaseBean {
-
-    @Expose
-    private String title;
-
-    @Expose
-    private SpaceBean space;
-
-    @Expose
-    private VersionBean version;
-
-    @Expose
-    private MetadataBean metadata;
-
-    @Expose
-    private AttachmentExtensions extensions;
+public class AttachmentBean extends ContentBean {
 
     private InputStream inputStream;
+
+    private ContentClient contentClient;
 
     public AttachmentBean() {
     }
@@ -44,56 +42,24 @@ public class AttachmentBean extends BaseBean {
     }
 
     public AttachmentBean(InputStream inputStream, String filename, String comment) {
-        this.title = filename;
+        this.setTitle(filename);
         this.inputStream = inputStream;
         if (comment != null) {
-            this.extensions = new AttachmentExtensions();
-            this.extensions.setComment(comment);
+            this.setMetadata(new MetadataBean());
+            this.getMetadata().setComment(comment);
         }
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public SpaceBean getSpace() {
-        return space;
-    }
-
-    public void setSpace(SpaceBean space) {
-        this.space = space;
-    }
-
-    public VersionBean getVersion() {
-        return version;
-    }
-
-    public void setVersion(VersionBean version) {
-        this.version = version;
-    }
-
-    public MetadataBean getMetadata() {
-        return metadata;
-    }
-
-    public void setMetadata(MetadataBean metadata) {
-        this.metadata = metadata;
-    }
-
-    public AttachmentExtensions getExtensions() {
-        return extensions;
-    }
-
-    public void setExtensions(AttachmentExtensions extensions) {
-        this.extensions = extensions;
-    }
-
     public InputStream getInputStream() {
-        return inputStream;
+        if (this.inputStream != null) {
+            return inputStream;
+        } else if (this.contentClient != null) {
+            //Future<InputStream> result = this.contentClient.downloadAttachement(this);
+            //return result.get();
+            return null;
+        } else {
+            throw new IllegalStateException("Neither an input stream, nor a content client is set!");
+        }
     }
 
 }

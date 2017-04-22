@@ -1,6 +1,5 @@
 /**
- * Copyright 2016 Micromata GmbH
- * Modifications Copyright 2017 Martin Böhmer
+ * Copyright 2017 Martin Böhmer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +15,17 @@
  */
 package de.micromata.confluence.rest.core.misc;
 
+import java.net.HttpURLConnection;
+
 /**
- * @author Christian Schulze (c.schulze@micromata.de)
  * @author Martin Böhmer (mb@itboehmer.de)
  */
-public enum ContentType {
-    PAGE("page"),
-    BLOGPOST("blogpost"),
-    ATTACHMENT("attachment");
+public class UnexpectedContentException extends RestException {
 
-    String name;
+    private static final long serialVersionUID = 141111096347706556L;
 
-    ContentType(String name) {
-        this.name = name;
+    public UnexpectedContentException(String expectedResult, String actualResult) {
+        super(HttpURLConnection.HTTP_OK, "OK", null, "Unexpected result. Was: " + actualResult + " Expected: " + expectedResult);
     }
 
-    public String getName() {
-        return name;
-    }
 }

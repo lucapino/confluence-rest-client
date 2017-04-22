@@ -1,3 +1,19 @@
+/**
+ * Copyright 2016 Micromata GmbH
+ * Modifications Copyright 2017 Martin Böhmer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package de.micromata.confluence.rest;
 
 import de.micromata.confluence.rest.client.ContentClient;
@@ -27,7 +43,6 @@ import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.*;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -38,10 +53,8 @@ import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 /**
  * Client to interact with Confluence server's REST API.
  *
- * Author: Christian Schulze (c.schulze@micromata.de), Martin Böhmer (mb@itboehmer.de)
- * Created: 01.07.2016
- * Modified: 19.04.2017
- * Project: ConfluenceTransferPlugin
+ * @author Christian Schulze (c.schulze@micromata.de)
+ * @author Martin Böhmer (mb@itboehmer.de)
  */
 public class ConfluenceRestClient implements RestPathConstants, RestParamConstants {
 
@@ -79,7 +92,9 @@ public class ConfluenceRestClient implements RestPathConstants, RestParamConstan
         String host = uri.getHost();
         int port = getPort(uri.toURL());
         String scheme = HTTP;
-        if (port == 443) scheme = HTTPS;
+        if (port == 443) {
+            scheme = HTTPS;
+        }
         HttpHost target = new HttpHost(host, port, scheme);
         CredentialsProvider credsProvider = new BasicCredentialsProvider();
         credsProvider.setCredentials(
@@ -109,30 +124,29 @@ public class ConfluenceRestClient implements RestPathConstants, RestParamConstan
         return response.getStatusLine().getStatusCode();
     }
 
-
-    public UserClient getUserClient(){
-        if(userClient == null){
+    public UserClient getUserClient() {
+        if (userClient == null) {
             userClient = new UserClientImpl(this, executorService);
         }
         return userClient;
     }
 
-    public SpaceClient getSpaceClient(){
-        if(spaceClient == null){
+    public SpaceClient getSpaceClient() {
+        if (spaceClient == null) {
             spaceClient = new SpaceClientImpl(this, executorService);
         }
         return spaceClient;
     }
 
-    public ContentClient getContentClient(){
-        if(contentClient == null){
+    public ContentClient getContentClient() {
+        if (contentClient == null) {
             contentClient = new ContentClientImpl(this, executorService);
         }
         return contentClient;
     }
 
-    public SearchClient getSearchClient(){
-        if(searchClient == null){
+    public SearchClient getSearchClient() {
+        if (searchClient == null) {
             searchClient = new SearchClientImpl(this, executorService);
         }
         return searchClient;
