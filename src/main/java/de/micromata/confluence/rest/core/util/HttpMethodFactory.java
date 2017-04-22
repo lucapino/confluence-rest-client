@@ -38,20 +38,20 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
  * @author Martin Böhmer (mb@itboehmer.de)
  */
 public class HttpMethodFactory {
-
+    
     public static HttpGet createGetMethod(URI uri) {
         HttpGet method = new HttpGet(uri);
         setHeadersForJsonExchange(method);
         return method;
     }
-
+    
     public static HttpGet createGetMethodForDownload(URI uri) {
         HttpGet method = new HttpGet(uri);
         method.addHeader(HttpHeaders.ACCEPT,
                 MediaType.APPLICATION_OCTET_STREAM);
         return method;
     }
-
+    
     public static HttpPost createPostMethod(URI uri, String body) throws UnsupportedEncodingException {
         if (uri == null) {
             return null;
@@ -62,7 +62,7 @@ public class HttpMethodFactory {
         method.setEntity(entity);
         return method;
     }
-
+    
     public static HttpPut createPutMethod(URI uri, String body) throws UnsupportedEncodingException {
         if (uri == null) {
             return null;
@@ -73,7 +73,7 @@ public class HttpMethodFactory {
         method.setEntity(entity);
         return method;
     }
-
+    
     public static HttpPost createPostMethodForUpload(URI uri, InputStream inputStream, String filename, String comment) throws FileNotFoundException {
         HttpPost method = new HttpPost(uri);
         method.addHeader("X-Atlassian-Token", "no-check");
@@ -83,9 +83,10 @@ public class HttpMethodFactory {
         if (comment != null) {
             entityBuilder.addTextBody("comment", comment);
         }
+        method.setEntity(entityBuilder.build());
         return method;
     }
-
+    
     private static void setHeadersForJsonExchange(HttpMessage httpMessage) {
         httpMessage.addHeader(new BasicHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON));
         httpMessage.addHeader(new BasicHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
