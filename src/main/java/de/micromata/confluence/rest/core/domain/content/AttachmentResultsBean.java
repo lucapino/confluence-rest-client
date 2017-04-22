@@ -14,60 +14,60 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.micromata.confluence.rest.core.domain;
+package de.micromata.confluence.rest.core.domain.content;
 
 import com.google.gson.annotations.Expose;
-import de.micromata.confluence.rest.core.domain.common.LinksBean;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Christian Schulze (c.schulze@micromata.de)
  * @author Martin Böhmer (mb@itboehmer.de)
  */
-public abstract class BaseBean {
+public class AttachmentResultsBean {
 
     @Expose
-    private String id;
+    private List<AttachmentBean> results = new ArrayList<>();
 
     @Expose
-    private String type;
+    private Integer start;
 
     @Expose
-    private LinksBean _links;
+    private Integer limit;
 
-    public BaseBean() {
+    @Expose
+    private Integer size;
+
+    public Integer getLimit() {
+        return limit;
     }
 
-    public BaseBean(String id) {
-        this.id = id;
+    public void setLimit(Integer limit) {
+        this.limit = limit;
     }
 
-    public BaseBean(String id, String type, LinksBean links) {
-        this.id = id;
-        this.type = type;
-        this._links = links;
+    public List<AttachmentBean> getResults() {
+        return results;
     }
 
-    public String getId() {
-        return id;
+    public void setResults(List<AttachmentBean> results) {
+        this.results = results;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public Integer getSize() {
+        return size;
     }
 
-    public LinksBean getLinks() {
-        return _links;
+    public void setSize(Integer size) {
+        this.size = size;
     }
 
-    public void setLinks(LinksBean links) {
-        this._links = links;
+    public Integer getStart() {
+        return start;
     }
 
-    public String getType() {
-        return type;
+    public void setStart(Integer start) {
+        this.start = start;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
 }

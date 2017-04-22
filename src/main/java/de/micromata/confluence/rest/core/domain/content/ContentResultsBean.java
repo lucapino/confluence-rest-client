@@ -2,7 +2,6 @@ package de.micromata.confluence.rest.core.domain.content;
 
 import com.google.gson.annotations.Expose;
 import de.micromata.confluence.rest.core.domain.BaseBean;
-import de.micromata.confluence.rest.core.domain.common.LinksBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,22 +15,15 @@ public class ContentResultsBean extends BaseBean {
 
     @Expose
     private List<ContentBean> results = new ArrayList<>();
+    
     @Expose
     private Integer start;
+    
     @Expose
     private Integer limit;
+    
     @Expose
     private Integer size;
-    @Expose
-    private LinksBean _links;
-
-    public LinksBean get_links() {
-        return _links;
-    }
-
-    public void set_links(LinksBean _links) {
-        this._links = _links;
-    }
 
     public Integer getLimit() {
         return limit;
