@@ -4,7 +4,7 @@ A simple Java Client to communicate with the Confluence Rest API.
 
 ## Version
 
-`SNAPSHOT-1.0` is Work in Progress...
+`SNAPSHOT-1.0`: work in progress
 
 ## Usage
 
@@ -14,7 +14,7 @@ You need the URI of the Confluence Server an your login credentials.
 ```java
 ExecutorService executorService = Executors.newCachedThreadPool();
 ConfluenceRestClient confluenceClient = new ConfluenceRestClient(executorService);
-URI confluenceBaseUri = new URI("hhtps://example.com);
+URI confluenceBaseUri = new URI("https://example.com);
 confluenceClient.connect(confluenceBaseUri, "username", "password");
 ```
 
@@ -34,7 +34,7 @@ ContentBean content = future.get();
 ...
 ```
 
-# License
+## License
 
 Copyright 2017 Martin Böhmer
 
