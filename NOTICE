@@ -1,0 +1,28 @@
+Confluence REST API client
+Copyright 2017 Martin Böhmer
+
+This product is based on software originally developed by Christian Schulze (c.schulze@micromata.de) at Micromata GmbH.
+See headers of source files for details.
+
+This product makes use of the following software libraries:
+
+  Apache Commons BeanUtils under The Apache Software License, Version 2.0
+  Apache Commons Codec under The Apache Software License, Version 2.0
+  Apache Commons Collections under Apache License, Version 2.0
+  Apache Commons IO under Apache License, Version 2.0
+  Apache Commons Lang under Apache License, Version 2.0
+  Apache Commons Logging under The Apache Software License, Version 2.0
+  Apache Commons Validator under Apache License, Version 2.0
+  Apache HttpClient under Apache License, Version 2.0
+  Apache HttpClient Mime under Apache License, Version 2.0
+  Apache HttpCore under Apache License, Version 2.0
+  Commons Digester under The Apache Software License, Version 2.0
+  confluence-rest-client under Apache License, Version 2.0
+  Gson under Apache 2.0
+  Hamcrest Core under New BSD License
+  jsr311-api under CDDL License
+  JUnit under Eclipse Public License 1.0
+  Logback Classic Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
+  Logback Core Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
+  SLF4J API Module under MIT License
+

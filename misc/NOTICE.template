@@ -1,0 +1,9 @@
+Confluence REST API client
+Copyright 2017 Martin Böhmer
+
+This product is based on software originally developed by Christian Schulze (c.schulze@micromata.de) at Micromata GmbH.
+See headers of source files for details.
+
+This product makes use of the following software libraries:
+
+#GENERATED_NOTICES#

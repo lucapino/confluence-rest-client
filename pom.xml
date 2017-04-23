@@ -26,7 +26,9 @@ limitations under the License.
     <packaging>jar</packaging>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <httpclient.version>4.5.3</httpclient.version>
+        <licenses.dir>${project.build.directory}/third-party-licenses</licenses.dir>
     </properties>
 
     <licenses>
@@ -131,6 +133,61 @@ limitations under the License.
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.jasig.maven</groupId>
+                <artifactId>maven-notice-plugin</artifactId>
+                <version>1.0.6.1</version>
+                <configuration>
+                    <noticeTemplate>misc/NOTICE.template</noticeTemplate>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>check-license</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.12</version>
+                <executions>
+                    <execution>
+                        <id>download-licenses</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>download-licenses</goal>
+                            <goal>add-third-party</goal>
+                        </goals>
+                        <configuration>
+                            <licensesOutputDirectory>${licenses.dir}</licensesOutputDirectory>
+                            <outputDirectory>${licenses.dir}</outputDirectory>
+                            <licenseMerges>
+                                <licenseMerge>The Apache Software License, Version 2.0|Apache 2|Apache License, Version 2.0|Apache Public License 2.0</licenseMerge>
+                            </licenseMerges>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>${licenses.dir}</directory>
+                <targetPath>third-party-licenses</targetPath>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>${project.basedir}</directory>
+                <includes>
+                    <include>LICENSE</include>
+                    <include>NOTICE</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 </project>
