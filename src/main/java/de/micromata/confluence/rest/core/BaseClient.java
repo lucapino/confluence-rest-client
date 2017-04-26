@@ -22,6 +22,8 @@ import com.google.gson.stream.JsonReader;
 import de.micromata.confluence.rest.ConfluenceRestClient;
 import de.micromata.confluence.rest.core.custom.CqlSearchResultDeserializer;
 import de.micromata.confluence.rest.core.domain.cql.CqlSearchResult;
+import de.micromata.confluence.rest.core.misc.SecurityException;
+import de.micromata.confluence.rest.core.misc.RestException;
 import de.micromata.confluence.rest.core.misc.RestParamConstants;
 import de.micromata.confluence.rest.core.misc.RestPathConstants;
 import de.micromata.confluence.rest.core.util.URIHelper;
@@ -36,15 +38,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.concurrent.ExecutorService;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Christian Schulze (c.schulze@micromata.de)
  * @author Martin Böhmer (mb@itboehmer.de)
  */
 public abstract class BaseClient implements RestParamConstants, RestPathConstants {
+
+    private final Logger log = LoggerFactory.getLogger(BaseClient.class);
 
     protected final ConfluenceRestClient confluenceRestClient;
     protected final CloseableHttpClient client;
@@ -61,7 +68,7 @@ public abstract class BaseClient implements RestParamConstants, RestPathConstant
         this.confluenceRestClient = confluenceRestClient;
         this.clientContext = confluenceRestClient.getClientContext();
         this.client = confluenceRestClient.getHttpclient();
-        this.baseUri = confluenceRestClient.getBaseUri();
+        this.baseUri = confluenceRestClient.getRestApiBaseUri();
         this.executorService = executorService;
     }
 
@@ -86,6 +93,43 @@ public abstract class BaseClient implements RestParamConstants, RestPathConstant
         HttpEntity entity = response.getEntity();
         InputStream inputStream = entity.getContent();
         return toJsonReader(inputStream);
+    }
+
+    protected <T> T executeRequest(HttpRequestBase httpRequest, Class<T> resultClass) throws IOException, RestException {
+        log.debug("Executing request " + httpRequest);
+        CloseableHttpResponse response = this.client.execute(httpRequest, this.clientContext);
+        int statusCode = response.getStatusLine().getStatusCode();
+        log.debug("Received status code " + statusCode + " from " + httpRequest);
+        switch (statusCode) {
+            case HttpURLConnection.HTTP_OK:
+                log.debug("Tranforming result into " + resultClass);
+                JsonReader jsonReader = getJsonReader(response);
+                T result = gson.fromJson(jsonReader, resultClass);
+                httpRequest.releaseConnection();
+                return result;
+            case HttpURLConnection.HTTP_UNAUTHORIZED:
+            case HttpURLConnection.HTTP_FORBIDDEN:
+                throw new SecurityException(response);
+            default:
+                throw new RestException(response);
+        }
+    }
+
+    protected InputStream executeRequest(HttpRequestBase httpRequest) throws IOException, RestException {
+        log.debug("Executing request " + httpRequest);
+        CloseableHttpResponse response = this.client.execute(httpRequest);
+        int statusCode = response.getStatusLine().getStatusCode();
+        log.debug("Received status code " + statusCode + " from " + httpRequest);
+        switch (statusCode) {
+            case HttpURLConnection.HTTP_OK:
+                log.debug("Transforming result into " + InputStream.class);
+                return response.getEntity().getContent();
+            case HttpURLConnection.HTTP_UNAUTHORIZED:
+            case HttpURLConnection.HTTP_FORBIDDEN:
+                throw new SecurityException(response);
+            default:
+                throw new RestException(response);
+        }
     }
 
 }

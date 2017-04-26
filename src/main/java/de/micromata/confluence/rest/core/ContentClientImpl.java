@@ -16,31 +16,25 @@
  */
 package de.micromata.confluence.rest.core;
 
-import com.google.gson.stream.JsonReader;
 import de.micromata.confluence.rest.ConfluenceRestClient;
 import de.micromata.confluence.rest.client.ContentClient;
 import de.micromata.confluence.rest.core.domain.content.AttachmentBean;
 import de.micromata.confluence.rest.core.domain.content.AttachmentResultsBean;
 import de.micromata.confluence.rest.core.domain.content.ContentBean;
 import de.micromata.confluence.rest.core.domain.content.ContentResultsBean;
-import de.micromata.confluence.rest.core.misc.AuthorizationException;
 import de.micromata.confluence.rest.core.misc.ContentStatus;
 import de.micromata.confluence.rest.core.misc.ContentType;
-import de.micromata.confluence.rest.core.misc.RestException;
 import de.micromata.confluence.rest.core.misc.UnexpectedContentException;
 import de.micromata.confluence.rest.core.util.HttpMethodFactory;
 import de.micromata.confluence.rest.core.util.URIHelper;
-import java.io.IOException;
 import java.io.InputStream;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.message.BasicNameValuePair;
 
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,14 +42,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import org.apache.commons.lang3.Validate;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Christian Schulze (c.schulze@micromata.de)
  * @author Martin Böhmer (mb@itboehmer.de)
  */
 public class ContentClientImpl extends BaseClient implements ContentClient {
+
+    private final Logger log = LoggerFactory.getLogger(ContentClientImpl.class);
 
     public SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -65,6 +63,10 @@ public class ContentClientImpl extends BaseClient implements ContentClient {
 
     @Override
     public Future<ContentBean> getContentById(String id, int version, List<String> expand) {
+        if (log.isInfoEnabled()) {
+            String message = "Getting content by ID. ID=%1$s, version=%2$s, expand=%3$s";
+            log.info(String.format(message, id, version, expand));
+        }
         return executorService.submit(() -> {
             // URI with parameters
             URIBuilder uriBuilder = URIHelper.buildPath(baseUri, CONTENT, id);
@@ -82,6 +84,10 @@ public class ContentClientImpl extends BaseClient implements ContentClient {
 
     @Override
     public Future<ContentResultsBean> getContent(ContentType type, String spacekey, String title, ContentStatus status, Date postingDay, List<String> expand, int start, int limit) {
+        if (log.isInfoEnabled()) {
+            String message = "Getting content. Type=%1$s, space=%2$s, title=%3$s, status=%4$s, postingDay=%5$s, expand=%6$s, start=%7$s, limit=%8$s";
+            log.info(String.format(message, type, spacekey, title, status, postingDay, expand, start, limit));
+        }
         // URI with parameters
         URIBuilder uriBuilder = buildPath(CONTENT);
         List<NameValuePair> nameValuePairs = new ArrayList<>();
@@ -119,6 +125,11 @@ public class ContentClientImpl extends BaseClient implements ContentClient {
     }
 
     public Future<ContentBean> createContent(ContentBean content) {
+        if (log.isInfoEnabled()) {
+            String message = "Creating content. Title=%1$s, space=%2$s";
+            String spaceKey = (content.getSpace() != null) ? content.getSpace().getKey() : null;
+            log.info(String.format(message, content.getTitle(), spaceKey));
+        }
         // Encode content
         String body = gson.toJson(content);
         // Request
@@ -182,37 +193,6 @@ public class ContentClientImpl extends BaseClient implements ContentClient {
             HttpGet method = HttpMethodFactory.createGetMethodForDownload(uri);
             return executeRequest(method);
         });
-    }
-
-    private <T> T executeRequest(HttpRequestBase httpRequest, Class<T> resultClass) throws IOException, AuthorizationException, RestException {
-        CloseableHttpResponse response = this.client.execute(httpRequest);
-        int statusCode = response.getStatusLine().getStatusCode();
-        switch (statusCode) {
-            case HttpURLConnection.HTTP_OK:
-                JsonReader jsonReader = getJsonReader(response);
-                T result = gson.fromJson(jsonReader, resultClass);
-                httpRequest.releaseConnection();
-                return result;
-            case HttpURLConnection.HTTP_UNAUTHORIZED:
-            case HttpURLConnection.HTTP_FORBIDDEN:
-                throw new AuthorizationException(response);
-            default:
-                throw new RestException(response);
-        }
-    }
-
-    private InputStream executeRequest(HttpRequestBase httpRequest) throws IOException, AuthorizationException, RestException {
-        CloseableHttpResponse response = this.client.execute(httpRequest);
-        int statusCode = response.getStatusLine().getStatusCode();
-        switch (statusCode) {
-            case HttpURLConnection.HTTP_OK:
-                return response.getEntity().getContent();
-            case HttpURLConnection.HTTP_UNAUTHORIZED:
-            case HttpURLConnection.HTTP_FORBIDDEN:
-                throw new AuthorizationException(response);
-            default:
-                throw new RestException(response);
-        }
     }
 
 }

@@ -20,11 +20,15 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 /**
  * @author Martin Böhmer (mb@itboehmer.de)
  */
-public class AuthorizationException extends RestException {
+public class SecurityException extends RestException {
 
     private static final long serialVersionUID = -184282162127530712L;
 
-    public AuthorizationException(CloseableHttpResponse response) {
+    public SecurityException(int statusCode, String reasonPhrase, String message, Throwable cause) {
+        super(statusCode, reasonPhrase, null, message, cause);
+    }
+
+    public SecurityException(CloseableHttpResponse response) {
         super(response);
     }
 

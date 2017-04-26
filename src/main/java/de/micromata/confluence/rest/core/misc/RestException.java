@@ -21,30 +21,35 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 
 import java.io.IOException;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Christian Schulze (c.schulze@micromata.de)
  * @author Martin Böhmer (mb@itboehmer.de)
  */
 public class RestException extends Exception {
-
+    
+    private final Logger log = LoggerFactory.getLogger(RestException.class);
+    
     private static final long serialVersionUID = -6402297688207704131L;
-
+    
     private final int statusCode;
-
+    
     private final String reasonPhrase;
-
+    
     private String responseBody;
-
+    
     private final String message;
-
-    protected RestException(int statusCode, String reasonphrase, String responseBody, String message) {
+    
+    protected RestException(int statusCode, String reasonphrase, String responseBody, String message, Throwable cause) {
+        super(cause);
         this.statusCode = statusCode;
         this.reasonPhrase = reasonphrase;
         this.responseBody = responseBody;
         this.message = message;
     }
-
+    
     public RestException(CloseableHttpResponse response) {
         StatusLine statusLine = response.getStatusLine();
         this.statusCode = statusLine.getStatusCode();
@@ -54,27 +59,27 @@ public class RestException extends Exception {
                 this.responseBody = IOUtils.toString(response.getEntity().getContent());
             }
         } catch (IOException ioe) {
-            // Noop. Should be logged.
+            log.warn(("Error reading response " + response));
         }
         boolean hasBody = (this.responseBody != null);
         this.message = "Status: " + this.statusCode + ". Reason: " + this.reasonPhrase + ". Has body: " + hasBody;
     }
-
+    
     @Override
     public String getMessage() {
         return this.message;
     }
-
+    
     public int getStatusCode() {
         return statusCode;
     }
-
+    
     public String getReasonPhrase() {
         return reasonPhrase;
     }
-
+    
     public String getResponseBody() {
         return responseBody;
     }
-
+    
 }
