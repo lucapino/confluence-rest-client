@@ -25,7 +25,7 @@ public class UnexpectedContentException extends RestException {
     private static final long serialVersionUID = 141111096347706556L;
 
     public UnexpectedContentException(String expectedResult, String actualResult) {
-        super(HttpURLConnection.HTTP_OK, "OK", null, "Unexpected result. Was: " + actualResult + " Expected: " + expectedResult);
+        super(HttpURLConnection.HTTP_OK, "OK", null, "Unexpected result. Was: " + actualResult + " Expected: " + expectedResult, null);
     }
 
 }

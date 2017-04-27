@@ -1,6 +1,7 @@
 package de.micromata.confluence.rest.junit;
 
 import de.micromata.confluence.rest.ConfluenceRestClient;
+import de.micromata.confluence.rest.core.misc.SecurityException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
@@ -27,7 +28,7 @@ public class BaseTest {
     ConfluenceRestClient confluenceRestClient;
 
     @Before
-    public void connect() throws URISyntaxException, IOException, ExecutionException, InterruptedException {
+    public void connect() throws URISyntaxException, IOException, ExecutionException, InterruptedException, SecurityException {
         ExecutorService executorService	= Executors.newFixedThreadPool(100);
 //        ProxyHost proxy = new ProxyHost("proxy", 3128);
         URI uri = new URI(TEST_SYSTEM_URL);
