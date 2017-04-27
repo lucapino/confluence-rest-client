@@ -150,28 +150,6 @@ limitations under the License.
                     </execution>
                 </executions>
             </plugin>
-<!--            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>1.12</version>
-                <executions>
-                    <execution>
-                        <id>download-licenses</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>download-licenses</goal>
-                            <goal>add-third-party</goal>
-                        </goals>
-                        <configuration>
-                            <licensesOutputDirectory>${licenses.dir}</licensesOutputDirectory>
-                            <outputDirectory>${licenses.dir}</outputDirectory>
-                            <licenseMerges>
-                                <licenseMerge>The Apache Software License, Version 2.0|Apache 2|Apache License, Version 2.0|Apache Public License 2.0</licenseMerge>
-                            </licenseMerges>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>-->
         </plugins>
         <resources>
             <resource>
@@ -190,4 +168,41 @@ limitations under the License.
             </resource>
         </resources>
     </build>
+    <profiles>
+        <profile>
+            <id>release-profile</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>license-maven-plugin</artifactId>
+                        <version>1.12</version>
+                        <executions>
+                            <execution>
+                                <id>download-licenses</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>download-licenses</goal>
+                                    <goal>add-third-party</goal>
+                                </goals>
+                                <configuration>
+                                    <licensesOutputDirectory>${licenses.dir}</licensesOutputDirectory>
+                                    <outputDirectory>${licenses.dir}</outputDirectory>
+                                    <licenseMerges>
+                                        <licenseMerge>The Apache Software License, Version 2.0|Apache 2|Apache License, Version 2.0|Apache Public License 2.0</licenseMerge>
+                                    </licenseMerges>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
