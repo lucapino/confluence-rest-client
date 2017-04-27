@@ -1,11 +1,11 @@
 package de.micromata.confluence.rest.junit;
 
-import de.micromata.confluence.rest.client.ContentClient;
-import de.micromata.confluence.rest.core.domain.content.ContentBean;
-import de.micromata.confluence.rest.core.domain.content.ContentResultsBean;
-import de.micromata.confluence.rest.core.misc.ContentStatus;
-import de.micromata.confluence.rest.core.misc.ContentType;
-import de.micromata.confluence.rest.core.misc.ExpandField;
+import de.itboehmer.confluence.rest.client.ContentClient;
+import de.itboehmer.confluence.rest.core.domain.content.ContentBean;
+import de.itboehmer.confluence.rest.core.domain.content.ContentResultsBean;
+import de.itboehmer.confluence.rest.core.misc.ContentStatus;
+import de.itboehmer.confluence.rest.core.misc.ContentType;
+import de.itboehmer.confluence.rest.core.misc.ExpandField;
 import org.junit.Assert;
 import org.junit.Test;
 

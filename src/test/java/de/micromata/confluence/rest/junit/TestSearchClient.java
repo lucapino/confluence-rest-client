@@ -1,12 +1,12 @@
 package de.micromata.confluence.rest.junit;
 
-import de.micromata.confluence.rest.client.SearchClient;
-import de.micromata.confluence.rest.core.cql.CqlBuilder;
-import de.micromata.confluence.rest.core.cql.CqlSearchBean;
-import de.micromata.confluence.rest.core.cql.EField;
-import de.micromata.confluence.rest.core.cql.EOperator;
-import de.micromata.confluence.rest.core.domain.cql.CqlSearchResult;
-import de.micromata.confluence.rest.core.misc.ExpandField;
+import de.itboehmer.confluence.rest.client.SearchClient;
+import de.itboehmer.confluence.rest.core.cql.CqlBuilder;
+import de.itboehmer.confluence.rest.core.cql.CqlSearchBean;
+import de.itboehmer.confluence.rest.core.cql.EField;
+import de.itboehmer.confluence.rest.core.cql.EOperator;
+import de.itboehmer.confluence.rest.core.domain.cql.CqlSearchResult;
+import de.itboehmer.confluence.rest.core.misc.ExpandField;
 import org.junit.Assert;
 import org.junit.Test;
 

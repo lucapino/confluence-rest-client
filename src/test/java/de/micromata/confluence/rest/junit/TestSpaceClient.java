@@ -1,10 +1,10 @@
 package de.micromata.confluence.rest.junit;
 
-import de.micromata.confluence.rest.client.SpaceClient;
-import de.micromata.confluence.rest.core.domain.space.SpaceResultsBean;
-import de.micromata.confluence.rest.core.domain.space.SpaceBean;
-import de.micromata.confluence.rest.core.misc.SpaceStatus;
-import de.micromata.confluence.rest.core.misc.SpaceType;
+import de.itboehmer.confluence.rest.client.SpaceClient;
+import de.itboehmer.confluence.rest.core.domain.space.SpaceResultsBean;
+import de.itboehmer.confluence.rest.core.domain.space.SpaceBean;
+import de.itboehmer.confluence.rest.core.misc.SpaceStatus;
+import de.itboehmer.confluence.rest.core.misc.SpaceType;
 import org.junit.Assert;
 import org.junit.Test;
 

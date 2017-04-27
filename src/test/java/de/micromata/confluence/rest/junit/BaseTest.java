@@ -1,7 +1,7 @@
 package de.micromata.confluence.rest.junit;
 
-import de.micromata.confluence.rest.ConfluenceRestClient;
-import de.micromata.confluence.rest.core.misc.SecurityException;
+import de.itboehmer.confluence.rest.ConfluenceRestClient;
+import de.itboehmer.confluence.rest.core.misc.SecurityException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 

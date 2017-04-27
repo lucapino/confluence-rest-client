@@ -1,7 +1,7 @@
 package de.micromata.confluence.rest.junit;
 
-import de.micromata.confluence.rest.client.UserClient;
-import de.micromata.confluence.rest.core.domain.UserBean;
+import de.itboehmer.confluence.rest.client.UserClient;
+import de.itboehmer.confluence.rest.core.domain.UserBean;
 import org.junit.Assert;
 import org.junit.Test;
 
