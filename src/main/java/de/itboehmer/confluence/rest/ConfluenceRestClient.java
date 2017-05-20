@@ -28,6 +28,7 @@ import de.itboehmer.confluence.rest.core.domain.UserBean;
 import de.itboehmer.confluence.rest.core.misc.SecurityException;
 import de.itboehmer.confluence.rest.core.misc.RestParamConstants;
 import de.itboehmer.confluence.rest.core.misc.RestPathConstants;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
@@ -48,7 +49,7 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import org.apache.http.auth.AuthenticationException;
+import java.util.logging.Level;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,13 +76,11 @@ public class ConfluenceRestClient implements RestPathConstants, RestParamConstan
     private HttpHost proxy;
     private CookieStore cookieStore = new BasicCookieStore();
     private HttpClientContext clientContext;
+    private boolean isInitialised = false;
 
     private UserClient userClient;
-
     private SpaceClient spaceClient;
-
     private ContentClient contentClient;
-
     private SearchClient searchClient;
 
     public ConfluenceRestClient(ExecutorService executorService) {
@@ -134,6 +133,7 @@ public class ConfluenceRestClient implements RestPathConstants, RestParamConstan
             log.info("  No proxy specified");
         }
         this.httpclient = clientBuilder.build();
+        isInitialised = true;
         // Check validity of credentials by user profile request
         if (explicit) {
             explicitlyCheckCredentials();
@@ -159,7 +159,23 @@ public class ConfluenceRestClient implements RestPathConstants, RestParamConstan
         }
     }
 
+    /**
+     * Closes the Confluence clioent and associated resources, like the HTTP
+     * client and the {@link ExecutorService}.
+     */
+    public void close() {
+        log.debug("Closing HTTP client");
+        try {
+            this.httpclient.close();
+        } catch (IOException ex) {
+            log.error("Error closing HTTP client", ex);
+        }
+        log.debug("Shutting down executor service");
+        this.executorService.shutdown();
+    }
+
     public UserClient getUserClient() {
+        ensureInitialisation();
         if (userClient == null) {
             userClient = new UserClientImpl(this, executorService);
         }
@@ -167,6 +183,7 @@ public class ConfluenceRestClient implements RestPathConstants, RestParamConstan
     }
 
     public SpaceClient getSpaceClient() {
+        ensureInitialisation();
         if (spaceClient == null) {
             spaceClient = new SpaceClientImpl(this, executorService);
         }
@@ -174,6 +191,7 @@ public class ConfluenceRestClient implements RestPathConstants, RestParamConstan
     }
 
     public ContentClient getContentClient() {
+        ensureInitialisation();
         if (contentClient == null) {
             contentClient = new ContentClientImpl(this, executorService);
         }
@@ -181,10 +199,17 @@ public class ConfluenceRestClient implements RestPathConstants, RestParamConstan
     }
 
     public SearchClient getSearchClient() {
+        ensureInitialisation();
         if (searchClient == null) {
             searchClient = new SearchClientImpl(this, executorService);
         }
         return searchClient;
+    }
+
+    private void ensureInitialisation() {
+        if (!isInitialised) {
+            throw new IllegalStateException("ConfluenceRestClient has not been initialised. Call connect method before using specific clients users, content, spaces, etc.");
+        }
     }
 
     /**
@@ -255,4 +280,5 @@ public class ConfluenceRestClient implements RestPathConstants, RestParamConstan
     public CloseableHttpClient getHttpclient() {
         return httpclient;
     }
+
 }

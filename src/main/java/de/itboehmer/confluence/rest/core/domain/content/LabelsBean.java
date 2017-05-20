@@ -1,6 +1,5 @@
 /**
- * Copyright 2016 Micromata GmbH
- * Modifications Copyright 2017 Martin Böhmer
+ * Copyright 2017 Martin Böhmer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,44 +16,55 @@
 package de.itboehmer.confluence.rest.core.domain.content;
 
 import com.google.gson.annotations.Expose;
+import java.util.List;
 
 /**
- * @author Christian Schulze (c.schulze@micromata.de)
- * @author Martin Böhmer (mb@itboehmer.de)
+ * @author Martin Böhmer
  */
-public class MetadataBean {
+public class LabelsBean {
 
     @Expose
-    private LabelsBean labels;
+    List<LabelBean> results;
+    
+    @Expose
+    private int start;
 
     @Expose
-    private String comment;
+    private int limit;
 
     @Expose
-    private String mediaType;
+    private int size;
 
-    public LabelsBean getLabels() {
-        return labels;
+    public List<LabelBean> getResults() {
+        return results;
     }
 
-    public void setLabels(LabelsBean labels) {
-        this.labels = labels;
+    public void setResults(List<LabelBean> results) {
+        this.results = results;
     }
 
-    public String getComment() {
-        return comment;
+    public int getStart() {
+        return start;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setStart(int start) {
+        this.start = start;
     }
 
-    public String getMediaType() {
-        return mediaType;
+    public int getLimit() {
+        return limit;
     }
 
-    public void setMediaType(String mediaType) {
-        this.mediaType = mediaType;
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 
 }

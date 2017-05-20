@@ -22,6 +22,8 @@ import de.itboehmer.confluence.rest.core.domain.content.AttachmentBean;
 import de.itboehmer.confluence.rest.core.domain.content.AttachmentResultsBean;
 import de.itboehmer.confluence.rest.core.domain.content.ContentBean;
 import de.itboehmer.confluence.rest.core.domain.content.ContentResultsBean;
+import de.itboehmer.confluence.rest.core.domain.content.LabelBean;
+import de.itboehmer.confluence.rest.core.domain.content.LabelsBean;
 import de.itboehmer.confluence.rest.core.misc.ContentStatus;
 import de.itboehmer.confluence.rest.core.misc.ContentType;
 import de.itboehmer.confluence.rest.core.misc.UnexpectedContentException;
@@ -42,7 +44,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import org.apache.commons.lang3.Validate;
 import org.apache.http.client.methods.HttpPost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -192,6 +193,26 @@ public class ContentClientImpl extends BaseClient implements ContentClient {
             // Request
             HttpGet method = HttpMethodFactory.createGetMethodForDownload(uri);
             return executeRequest(method);
+        });
+    }
+
+    @Override
+    public Future<LabelsBean> addLabels(ContentBean content, List<LabelBean> labels) {
+        if (log.isInfoEnabled()) {
+            String message = "Adding labels to content. Content ID=%1$s, labels %2$s";
+            log.info(String.format(message, content.getId(), labels));
+        }
+
+        // Encode content
+        String body = gson.toJson(labels);
+
+        return executorService.submit(() -> {
+            // URI
+            String attachmentUriPath = String.format(CONTENT_LABEL, content.getId());
+            URI uri = buildPath(attachmentUriPath).build();
+            // Request
+            HttpPost method = HttpMethodFactory.createPostMethod(uri, body);
+            return executeRequest(method, LabelsBean.class);
         });
     }
 

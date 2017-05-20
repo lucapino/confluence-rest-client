@@ -19,6 +19,8 @@ package de.itboehmer.confluence.rest.client;
 import de.itboehmer.confluence.rest.core.domain.content.AttachmentBean;
 import de.itboehmer.confluence.rest.core.domain.content.ContentBean;
 import de.itboehmer.confluence.rest.core.domain.content.ContentResultsBean;
+import de.itboehmer.confluence.rest.core.domain.content.LabelBean;
+import de.itboehmer.confluence.rest.core.domain.content.LabelsBean;
 import de.itboehmer.confluence.rest.core.misc.ContentStatus;
 import de.itboehmer.confluence.rest.core.misc.ContentType;
 import java.io.InputStream;
@@ -94,6 +96,22 @@ public interface ContentClient {
      */
     public Future<AttachmentBean> uploadAttachment(AttachmentBean attachment, ContentBean parentContent);
 
+    /**
+     * Downalds the given attachment.
+     *
+     * @param attachment the attachment to downlad, represented by an
+     * {@link AttachmentBean}
+     * @return {@link InputStream} providing the attachment's data.
+     */
     public Future<InputStream> downloadAttachement(AttachmentBean attachment);
+
+    /**
+     * Adds a set of labels to a given content.
+     *
+     * @param content the content to add the labels to.
+     * @param labels the label to add, represetned as {@link LabelBean}s
+     * @return
+     */
+    public Future<LabelsBean> addLabels(ContentBean content, List<LabelBean> labels);
 
 }

@@ -38,4 +38,6 @@ public interface RestPathConstants {
 
     String CONTENT_ATTACHMENT = CONTENT + "/%1$s/child/attachment";
 
+    String CONTENT_LABEL = CONTENT + "/%1$s/label";
+
 }

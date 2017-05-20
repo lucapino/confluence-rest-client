@@ -34,4 +34,13 @@ public enum ContentType {
     public String getName() {
         return name;
     }
+
+    public static ContentType getByName(String name) {
+        for (ContentType contentType : values()) {
+            if (contentType.getName().equals(name)) {
+                return contentType;
+            }
+        }
+        throw new IllegalStateException("No enum constant " + ContentType.class + " with name: " + name);
+    }
 }

@@ -31,7 +31,8 @@ public enum ExpandField {
     OPERATIONS("operations"),
     DESCENDANTS("descendants"),
     ANCESTORS("ancestors"),
-    RESTRICTIONS("restrictions");
+    RESTRICTIONS("restrictions"),
+    METADATA_LABELS("metadata.labels");
 
     String name;
 
