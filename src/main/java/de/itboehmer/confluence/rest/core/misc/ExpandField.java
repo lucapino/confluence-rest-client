@@ -18,7 +18,7 @@ package de.itboehmer.confluence.rest.core.misc;
 
 /**
  * @author Christian Schulze (c.schulze@micromata.de)
- * @author Martin Böhmer (mb@itboehmer.de)
+ * @author Martin Böhmer
  */
 public enum ExpandField {
     SPACE("space"),

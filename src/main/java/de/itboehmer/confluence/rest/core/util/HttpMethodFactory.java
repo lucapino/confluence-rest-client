@@ -35,7 +35,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 /**
  * @author Christian Schulze (c.schulze@micromata.de)
- * @author Martin Böhmer (mb@itboehmer.de)
+ * @author Martin Böhmer
  */
 public class HttpMethodFactory {
     

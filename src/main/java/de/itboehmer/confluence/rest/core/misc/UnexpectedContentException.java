@@ -18,7 +18,7 @@ package de.itboehmer.confluence.rest.core.misc;
 import java.net.HttpURLConnection;
 
 /**
- * @author Martin Böhmer (mb@itboehmer.de)
+ * @author Martin Böhmer
  */
 public class UnexpectedContentException extends RestException {
 

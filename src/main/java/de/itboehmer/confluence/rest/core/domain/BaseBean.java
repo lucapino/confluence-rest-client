@@ -21,7 +21,7 @@ import de.itboehmer.confluence.rest.core.domain.common.LinksBean;
 
 /**
  * @author Christian Schulze (c.schulze@micromata.de)
- * @author Martin Böhmer (mb@itboehmer.de)
+ * @author Martin Böhmer
  */
 public abstract class BaseBean {
 

@@ -33,7 +33,7 @@ import java.util.concurrent.Future;
  * Client to receive Content from a confluence server.
  *
  * @author Christian Schulze (c.schulze@micromata.de)
- * @author Martin Böhmer (mb@itboehmer.de)
+ * @author Martin Böhmer
  */
 public interface ContentClient {
 

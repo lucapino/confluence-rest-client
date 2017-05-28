@@ -49,7 +49,6 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +57,7 @@ import org.slf4j.LoggerFactory;
  * Client to interact with Confluence server's REST API.
  *
  * @author Christian Schulze (c.schulze@micromata.de)
- * @author Martin Böhmer (mb@itboehmer.de)
+ * @author Martin Böhmer
  */
 public class ConfluenceRestClient implements RestPathConstants, RestParamConstants {
 

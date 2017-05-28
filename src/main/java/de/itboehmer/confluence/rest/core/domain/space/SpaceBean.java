@@ -22,7 +22,7 @@ import de.itboehmer.confluence.rest.core.domain.common.ExpandableBean;
 
 /**
  * @author Christian Schulze (c.schulze@micromata.de)
- * @author Martin Böhmer (mb@itboehmer.de)
+ * @author Martin Böhmer
  */
 public class SpaceBean extends BaseBean {
 

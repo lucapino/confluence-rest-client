@@ -22,7 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 /**
- * @author Martin Böhmer (mb@itboehmer.de)
+ * @author Martin Böhmer
  */
 public class AttachmentBean extends ContentBean {
 

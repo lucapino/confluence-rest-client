@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Christian Schulze (c.schulze@micromata.de)
- * @author Martin Böhmer (mb@itboehmer.de)
+ * @author Martin Böhmer
  */
 public class UserClientImpl extends BaseClient implements UserClient {
     
