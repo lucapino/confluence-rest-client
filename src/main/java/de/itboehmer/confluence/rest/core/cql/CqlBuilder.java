@@ -1,5 +1,6 @@
 /**
  * Copyright 2016 Micromata GmbH
+ * Modifications Copyright 2017 Martin Böhmer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +19,8 @@ package de.itboehmer.confluence.rest.core.cql;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Author: Christian Schulze (c.schulze@micromata.de)
- * Date: 04.07.2016
- * Project: ConfluenceTransferPlugin
+ * @author Christian Schulze (c.schulze@micromata.de)
+ * @author Martin Böhmer
  */
 public class CqlBuilder {
 
@@ -42,10 +42,10 @@ public class CqlBuilder {
             jql.append(operator).append(WHITESPACE);
         }
         if (operand != null) {
-            if(operand.length > 1){
+            if (operand.length > 1) {
                 String join = StringUtils.join(operand, ",");
                 jql.append("(").append(join).append(") ");
-            }else {
+            } else {
                 jql.append(operand[0]).append(WHITESPACE);
             }
         }
@@ -102,4 +102,16 @@ public class CqlBuilder {
             return request;
         }
     }
+
+    /**
+     * Return the request String and clear the buffer.
+     *
+     * @return
+     */
+    public String build() {
+        String request = jql.toString();
+        clear();
+        return request;
+    }
+
 }
