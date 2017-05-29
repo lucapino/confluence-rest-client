@@ -1,5 +1,6 @@
 /**
  * Copyright 2016 Micromata GmbH
+ * Modifications Copyright 2017 Martin Böhmer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,16 +34,16 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.net.HttpURLConnection;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 /**
- * Author: Christian Schulze (c.schulze@micromata.de)
- * Date: 06.07.2016
- * Project: ConfluenceTransferPlugin
+ * Implementation of {@link SearchClient} to query content by CQL.
+ *
+ * @author Christian Schulze (c.schulze@micromata.de)
+ * @author Martin Böhmer
  */
 public class SearchClientImpl extends BaseClient implements SearchClient {
 
@@ -51,27 +52,27 @@ public class SearchClientImpl extends BaseClient implements SearchClient {
     }
 
     @Override
-    public Future<CqlSearchResult> searchContent(CqlSearchBean searchBean) throws URISyntaxException {
+    public Future<CqlSearchResult> searchContent(CqlSearchBean searchBean) {
         Validate.notNull(searchBean);
         Validate.notNull(StringUtils.trimToNull(searchBean.getCql()));
 
         String cql = searchBean.getCql();
         List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair(CQL, cql));
-        if(StringUtils.trimToNull(searchBean.getCqlcontext()) != null){
+        if (StringUtils.trimToNull(searchBean.getCqlcontext()) != null) {
             nameValuePairs.add(new BasicNameValuePair(CQL_CONTEXT, searchBean.getCqlcontext()));
         }
-        if(searchBean.getExcerpt() != null){
+        if (searchBean.getExcerpt() != null) {
             nameValuePairs.add(new BasicNameValuePair(EXCERPT, searchBean.getExcerpt().getName()));
         }
-        if(CollectionUtils.isNotEmpty(searchBean.getExpand()) == true){
+        if (CollectionUtils.isNotEmpty(searchBean.getExpand()) == true) {
             String join = StringUtils.join(searchBean.getExpand(), ",");
             nameValuePairs.add(new BasicNameValuePair(EXPAND, join));
         }
-        if(searchBean.getStart() > 0){
+        if (searchBean.getStart() > 0) {
             nameValuePairs.add(new BasicNameValuePair(START, String.valueOf(searchBean.getStart())));
         }
-        if(searchBean.getLimit() > 0){
+        if (searchBean.getLimit() > 0) {
             nameValuePairs.add(new BasicNameValuePair(LIMIT, String.valueOf(searchBean.getLimit())));
         }
         URIBuilder uriBuilder = URIHelper.buildPath(baseUri, SEARCH).addParameters(nameValuePairs);
