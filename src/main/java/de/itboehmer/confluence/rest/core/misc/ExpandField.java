@@ -21,26 +21,33 @@ package de.itboehmer.confluence.rest.core.misc;
  * @author Martin Böhmer
  */
 public enum ExpandField {
-    SPACE("space"),
-    BODY_VIEW("body.view"),
-    BODY_STORAGE("body.storage"),
-    VERSION("version"),
-    CONTAINER("container"),
-    HISTORY("history"),
-    CHILDREN("children"),
-    OPERATIONS("operations"),
-    DESCENDANTS("descendants"),
-    ANCESTORS("ancestors"),
-    RESTRICTIONS("restrictions"),
-    METADATA_LABELS("metadata.labels");
+    SPACE("space", "content."),
+    BODY_VIEW("body.view", "content."),
+    BODY_STORAGE("body.storage", "content."),
+    VERSION("version", "content."),
+    CONTAINER("container", "content."),
+    HISTORY("history", "content."),
+    CHILDREN("children", "content."),
+    OPERATIONS("operations", "content."),
+    DESCENDANTS("descendants", "content."),
+    ANCESTORS("ancestors", "content."),
+    RESTRICTIONS("restrictions", "content."),
+    METADATA_LABELS("metadata.labels", "content.");
 
-    String name;
+    private final String name;
+    private final String searchPrefix;
 
-    ExpandField(String name) {
+    ExpandField(String name, String searchPrefix) {
         this.name = name;
+        this.searchPrefix = searchPrefix;
     }
 
     public String getName() {
         return name;
     }
+
+    public String getNameForSearch() {
+        return searchPrefix + name;
+    }
+
 }
