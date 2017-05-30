@@ -39,6 +39,9 @@ public class ContentBean extends BaseBean {
     private SpaceBean space;
 
     @Expose
+    private HistoryBean history;
+
+    @Expose
     private VersionBean version;
 
     @Expose
@@ -178,4 +181,13 @@ public class ContentBean extends BaseBean {
     public void setVersion(VersionBean version) {
         this.version = version;
     }
+
+    public HistoryBean getHistory() {
+        return history;
+    }
+
+    public void setHistory(HistoryBean history) {
+        this.history = history;
+    }
+
 }
