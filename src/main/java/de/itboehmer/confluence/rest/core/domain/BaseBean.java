@@ -25,6 +25,12 @@ import de.itboehmer.confluence.rest.core.domain.common.LinksBean;
  */
 public abstract class BaseBean {
 
+    /**
+     * Indicates whether the bean was changed programmatically and requires to
+     * be updated, i.e. send to Confluence
+     */
+    private boolean dirty = false;
+
     @Expose
     private String id;
 
@@ -70,4 +76,17 @@ public abstract class BaseBean {
     public void setType(String type) {
         this.type = type;
     }
+
+    public void setDirty() {
+        dirty = true;
+    }
+
+    public boolean isDirty() {
+        // Unsaved conent is always dirty
+        if (getId() == null) {
+            return true;
+        }
+        return dirty;
+    }
+
 }
