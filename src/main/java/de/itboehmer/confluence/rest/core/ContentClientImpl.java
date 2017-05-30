@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -137,6 +138,24 @@ public class ContentClientImpl extends BaseClient implements ContentClient {
         return executorService.submit(() -> {
             URI uri = buildPath(CONTENT).build();
             HttpPost method = HttpMethodFactory.createPostMethod(uri, body);
+            return executeRequest(method, ContentBean.class);
+        });
+    }
+
+    @Override
+    public Future<ContentBean> updateContent(ContentBean content) {
+        if (log.isInfoEnabled()) {
+            String message = "Updating content. Title=%1$s, space=%2$s";
+            String spaceKey = (content.getSpace() != null) ? content.getSpace().getKey() : null;
+            log.info(String.format(message, content.getTitle(), spaceKey));
+        }
+        // Encode content
+        String body = gson.toJson(content);
+        // Request
+        return executorService.submit(() -> {
+            String contentUriPath = String.format(SPECIFIC_CONTENT, content.getId());
+            URI uri = buildPath(contentUriPath).build();
+            HttpPut method = HttpMethodFactory.createPutMethod(uri, body);
             return executeRequest(method, ContentBean.class);
         });
     }

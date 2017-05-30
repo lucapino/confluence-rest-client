@@ -80,9 +80,18 @@ public interface ContentClient {
      *
      * @param content The content to create.
      * @return A {@link Future} with the {@link ContentBean} representing the
-     * created page. Use this instance to continue working with the content.
+     * created content. Use this instance to continue working with the content.
      */
     public Future<ContentBean> createContent(ContentBean content);
+
+    /**
+     * Updates the provided content.
+     *
+     * @param content The content to update.
+     * @return A {@link Future} with the {@link ContentBean} representing the
+     * updated content. Use this instance to continue working with the content.
+     */
+    public Future<ContentBean> updateContent(ContentBean content);
 
     /**
      * Uploads the provided attachment to content (page or blogpost).

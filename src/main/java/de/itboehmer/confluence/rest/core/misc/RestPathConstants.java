@@ -36,8 +36,10 @@ public interface RestPathConstants {
 
     String SEARCH = "/search";
 
-    String CONTENT_ATTACHMENT = CONTENT + "/%1$s/child/attachment";
+    String SPECIFIC_CONTENT = CONTENT + "/%1$s";
 
-    String CONTENT_LABEL = CONTENT + "/%1$s/label";
+    String CONTENT_ATTACHMENT = SPECIFIC_CONTENT + "/child/attachment";
+
+    String CONTENT_LABEL = SPECIFIC_CONTENT + "/label";
 
 }
