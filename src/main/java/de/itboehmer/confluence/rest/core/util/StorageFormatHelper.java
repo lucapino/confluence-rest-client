@@ -26,36 +26,73 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 /**
- * Helper class for handling XML, e.g. Confluence's storage format.
+ * Helper class for handling Confluence's storage format.
  *
  * @author Martin Böhmer
  */
-public final class XMLHelper {
-    
-    private static Logger LOG = LoggerFactory.getLogger(XMLHelper.class);
-    
+public final class StorageFormatHelper {
+
+    private static final Logger LOG = LoggerFactory.getLogger(StorageFormatHelper.class);
+
+    public static boolean equalsIgnoreWhitespace(String str1, String str2) {
+        // Handle null values
+        if ((str1 == null && str2 == null)) {
+            return true;
+        }
+        if (str1 == null) {
+            str1 = "";
+        }
+        if (str2 == null) {
+            str2 = "";
+        }
+        // Quick check
+        if (str1.equals(str2)) {
+            return true;
+        }
+        // Compare
+        String strippedStr1 = str1.replaceAll("\\s", "");
+        String strippedStr2 = str2.replaceAll("\\s", "");
+        return strippedStr1.equals(strippedStr2);
+    }
+
     public static boolean xmlEquals(String xml1, String xml2) {
+        // Handle null values
+        if ((xml1 == null && xml2 == null)) {
+            return true;
+        }
+        if (xml1 == null) {
+            xml1 = "";
+        }
+        if (xml2 == null) {
+            xml2 = "";
+        }
+        // Quick check
+        if (xml1.equals(xml2)) {
+            return true;
+        }
+        // Compare XML
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setNamespaceAware(true);
+        dbf.setNamespaceAware(false);
         dbf.setCoalescing(true);
         dbf.setIgnoringElementContentWhitespace(true);
         dbf.setIgnoringComments(true);
-        
+
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
-            
+
             Document doc1 = db.parse(new ByteArrayInputStream(xml1.getBytes()));
             doc1.normalizeDocument();
-            
+
             Document doc2 = db.parse(new ByteArrayInputStream(xml2.getBytes()));
             doc2.normalizeDocument();
-            
+
             return doc1.isEqualNode(doc2);
-            
+
         } catch (ParserConfigurationException | SAXException | IOException ex) {
-            LOG.error("Error comparing XML strings.\n--XML1--\n" + xml1 + "\n--XML2--\n" + xml2);
+            LOG.error("Error comparing XML strings.\n--XML1--\n" + xml1 + "\n--XML2--\n" + xml2, ex);
         }
+
         return false;
     }
-    
+
 }
