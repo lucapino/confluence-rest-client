@@ -30,8 +30,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.nio.charset.Charset;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.protocol.HTTP;
 
 /**
  * @author Christian Schulze (c.schulze@micromata.de)
@@ -79,6 +81,7 @@ public class HttpMethodFactory {
         method.addHeader("X-Atlassian-Token", "no-check");
         MultipartEntityBuilder entityBuilder = MultipartEntityBuilder.create();
         entityBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+        entityBuilder.setCharset(Charset.forName("utf-8"));
         entityBuilder.addBinaryBody("file", inputStream, org.apache.http.entity.ContentType.DEFAULT_BINARY, filename);
         if (comment != null) {
             entityBuilder.addTextBody("comment", comment);
