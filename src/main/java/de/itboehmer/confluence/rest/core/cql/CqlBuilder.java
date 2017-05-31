@@ -80,13 +80,13 @@ public class CqlBuilder {
 
             jql.append(EKeyword.ORDER_BY).append(WHITESPACE);
             jql.append(fields[0]);
+            jql.append(WHITESPACE + order);
 
             for (int i = 1; i < fields.length; i++) {
                 jql.append(", ");
                 jql.append(fields[i]);
+                jql.append(WHITESPACE + order);
             }
-
-            jql.append(WHITESPACE + order);
 
             return build();
         }
