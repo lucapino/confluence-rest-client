@@ -9,10 +9,12 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import org.junit.Ignore;
 
 /**
  * Created by cschulc on 01.07.2016.
  */
+@Ignore
 public class TestUserClient extends BaseTest {
 
     public static final String ANONYMOUS = "Anonymous";

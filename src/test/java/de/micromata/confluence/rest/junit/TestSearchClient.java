@@ -15,12 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import org.junit.Ignore;
 
 /**
  * Author: Christian Schulze (c.schulze@micromata.de)
  * Date: 06.07.2016
  * Project: ConfluenceTransferPlugin
  */
+@Ignore
 public class TestSearchClient extends BaseTest {
 
     @Test

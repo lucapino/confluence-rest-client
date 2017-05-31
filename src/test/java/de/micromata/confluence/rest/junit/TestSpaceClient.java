@@ -13,12 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import org.junit.Ignore;
 
 /**
  * Author: Christian Schulze (c.schulze@micromata.de)
  * Date: 04.07.2016
  * Project: ConfluenceTransferPlugin
  */
+@Ignore
 public class TestSpaceClient extends BaseTest {
 
     private static final String SPACE_KEY_TO_SEARCH = "DEMO";
