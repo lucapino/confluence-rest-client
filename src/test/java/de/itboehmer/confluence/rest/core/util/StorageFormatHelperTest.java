@@ -24,7 +24,7 @@ import org.junit.Test;
 /**
  * Tests {@link StorageFormatHelper}.
  *
- * @author marboehm
+ * @author Martin Böhmer
  */
 public class StorageFormatHelperTest {
 
