@@ -150,7 +150,24 @@ limitations under the License.
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>external.atlassian.jgitflow</groupId>
+                <artifactId>jgitflow-maven-plugin</artifactId>
+                <version>1.0-m5.1</version>
+                <configuration>
+                    <flowInitContext>
+                        <masterBranchName>release</masterBranchName>
+                        <developBranchName>master</developBranchName>
+                        <featureBranchPrefix>feature-</featureBranchPrefix>
+                        <releaseBranchPrefix>staging-</releaseBranchPrefix>
+                        <hotfixBranchPrefix>hotfix-</hotfixBranchPrefix>
+                    </flowInitContext>
+                    <noDeploy>true</noDeploy>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
         </plugins>
+        
         <resources>
             <resource>
                 <directory>${licenses.dir}</directory>
@@ -168,6 +185,7 @@ limitations under the License.
             </resource>
         </resources>
     </build>
+    
     <profiles>
         <profile>
             <id>release-profile</id>
