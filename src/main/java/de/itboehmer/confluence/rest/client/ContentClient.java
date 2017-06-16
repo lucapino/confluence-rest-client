@@ -119,7 +119,7 @@ public interface ContentClient {
      *
      * @param content the content to add the labels to.
      * @param labels the label to add, represetned as {@link LabelBean}s
-     * @return
+     * @return the updated labels as a {@link LabelsBean}
      */
     public Future<LabelsBean> addLabels(ContentBean content, List<LabelBean> labels);
 

@@ -32,6 +32,7 @@ public interface UserClient {
      *
      * @param username the username
      * @return Future with the UserBean
+     * @throws java.net.URISyntaxException (never thrown due to future)
      */
     Future<UserBean> getUserByUsername(String username) throws URISyntaxException;
 
@@ -40,6 +41,7 @@ public interface UserClient {
      *
      * @param key the key
      * @return Future with the UserBean
+     * @throws java.net.URISyntaxException (never thrown due to future)
      */
     Future<UserBean> getUserByKey(String key) throws URISyntaxException;
 
@@ -47,6 +49,7 @@ public interface UserClient {
      * Get the current logged in user
      *
      * @return Future with the UserBean
+     * @throws java.net.URISyntaxException (never thrown due to future)
      */
     Future<UserBean> getCurrentUser() throws URISyntaxException;
 
@@ -54,6 +57,7 @@ public interface UserClient {
      * Get the Anonymous User
      *
      * @return Future with the UserBean
+     * @throws java.net.URISyntaxException (never thrown due to future)
      */
     Future<UserBean> getAnonymousUser() throws URISyntaxException;
 }

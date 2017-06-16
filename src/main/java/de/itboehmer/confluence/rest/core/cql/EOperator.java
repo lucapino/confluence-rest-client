@@ -38,33 +38,33 @@ public enum EOperator {
 
 
     /**
-     * The ">" operator is used to search for content where the value of the specified field is greater than the specified value.
+     * The "&gt;" operator is used to search for content where the value of the specified field is greater than the specified value.
      * Cannot be used with text fields.
-     * Note that the ">" operator can only be used with fields which support range operators (e.g. date fields and numeric fields).
+     * Note that the "&gt;" operator can only be used with fields which support range operators (e.g. date fields and numeric fields).
      * To see a field's supported operators, check the individual field reference.
      */
     GREATER_THAN(">"),
 
     /**
-     * The ">=" operator is used to search for content where the value of the specified field is greater than or equal to the specified value.
+     * The "&gt;=" operator is used to search for content where the value of the specified field is greater than or equal to the specified value.
      * Cannot be used with text fields.
-     * Note that the ">=" operator can only be used with fields which support range operators (e.g. date fields).
+     * Note that the "&gt;=" operator can only be used with fields which support range operators (e.g. date fields).
      * To see a field's supported operators, check the individual field reference.
      */
     GREATER_THAN_EQUALS(">="),
 
     /**
-     * The "<" operator is used to search for content where the value of the specified field is less than the specified value.
+     * The "&lt;" operator is used to search for content where the value of the specified field is less than the specified value.
      * Cannot be used with text fields.
-     * Note that the "<" operator can only be used with fields which support range operators (e.g. date fields).
+     * Note that the "&lt;" operator can only be used with fields which support range operators (e.g. date fields).
      * To see a field's supported operators, check the individual field reference.
      */
     LESS_THAN("<"),
 
     /**
-     * The "<=" operator is used to search for content where the value of the specified field is less than or equal to than the specified value.
+     * The "&lt;=" operator is used to search for content where the value of the specified field is less than or equal to than the specified value.
      * Cannot be used with text fields.
-     * Note that the "<=" operator can only be used with fields which support range operators (e.g. date fields).
+     * Note that the "&lt;=" operator can only be used with fields which support range operators (e.g. date fields).
      * To see a field's supported operators, check the individual field reference.
      */
     LESS_THAN_EQUALS("<="),

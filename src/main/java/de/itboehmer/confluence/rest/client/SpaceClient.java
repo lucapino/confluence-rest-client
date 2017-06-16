@@ -45,6 +45,7 @@ public interface SpaceClient {
      * @param start the start point of the collection to return
      * @param limit the limit of the number of spaces to return, this may be restricted by fixed system limits
      * @return Future with the ResultBean
+     * @throws java.net.URISyntaxException (never thrown due to future)
      */
    Future<SpaceResultsBean> getSpaces(List<String> keys, SpaceType type, SpaceStatus status, List<String> label, List<String> expand, int start, int limit) throws URISyntaxException;
 

@@ -94,7 +94,7 @@ public class CqlBuilder {
         /**
          * Return the request String and clear the buffer.
          *
-         * @return
+         * @return the request string
          */
         public String build() {
             String request = jql.toString();
@@ -106,7 +106,7 @@ public class CqlBuilder {
     /**
      * Return the request String and clear the buffer.
      *
-     * @return
+     * @return the request string
      */
     public String build() {
         String request = jql.toString();
