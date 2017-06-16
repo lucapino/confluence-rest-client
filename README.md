@@ -4,7 +4,9 @@ A simple Java Client to communicate with the Confluence Rest API.
 
 ## Version
 
-`SNAPSHOT-1.0`: work in progress
+Current release: `0.8.0`
+
+There still some parts of the client that require revision and refactoring.
 
 ## Usage
 
