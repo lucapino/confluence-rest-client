@@ -14,71 +14,72 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.itboehmer.confluence.rest.core;
-
-import de.itboehmer.confluence.rest.ConfluenceRestClient;
-import de.itboehmer.confluence.rest.client.UserClient;
-import de.itboehmer.confluence.rest.core.domain.UserBean;
-import de.itboehmer.confluence.rest.core.util.HttpMethodFactory;
-import org.apache.commons.lang3.Validate;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
+package dk.mikkelrj.confluence.rest.client.impl;
 
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+
+import org.apache.commons.lang3.Validate;
+import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import de.itboehmer.confluence.rest.client.UserClient;
+import de.itboehmer.confluence.rest.core.domain.UserBean;
+import de.itboehmer.confluence.rest.core.misc.RestParamConstants;
+import de.itboehmer.confluence.rest.core.misc.RestPathConstants;
+import dk.mikkelrj.confluence.rest.core.RequestService;
+import dk.mikkelrj.confluence.rest.core.impl.AtlassianAPIConfig;
 
 /**
  * @author Christian Schulze (c.schulze@micromata.de)
  * @author Martin Böhmer
  */
-public class UserClientImpl extends BaseClient implements UserClient {
+public class UserClientImpl extends BaseClientImpl implements UserClient {
     
     private final Logger log = LoggerFactory.getLogger(UserClientImpl.class);
 
-    public UserClientImpl(ConfluenceRestClient confluenceRestClient, ExecutorService executorService) {
-        super(confluenceRestClient, executorService);
+    public UserClientImpl(ExecutorService executorService, RequestService requestService, AtlassianAPIConfig apiConfig) {
+        super(executorService, requestService, apiConfig);
     }
 
     @Override
     public Future<UserBean> getUserByUsername(String username) throws URISyntaxException {
-        log.info("Getting user by name. Username=" + username);
+        log.info("Getting user by name '{}'.", username);
         Validate.notNull(username);
-        URIBuilder uriBuilder = buildPath(USER);
-        uriBuilder.addParameter(USERNAME, username);
+        URIBuilder uriBuilder = buildPath(RestPathConstants.USER);
+        uriBuilder.addParameter(RestParamConstants.USERNAME, username);
         return getUser(uriBuilder);
 
     }
 
     @Override
     public Future<UserBean> getUserByKey(String key) throws URISyntaxException {
-        log.info("Getting user by key. Key=" + key);
+        log.info("Getting user by key '{}'.", key);
         Validate.notNull(key);
-        URIBuilder uriBuilder = buildPath(USER);
-        uriBuilder.addParameter(KEY, key);
+        URIBuilder uriBuilder = buildPath(RestPathConstants.USER);
+        uriBuilder.addParameter(RestParamConstants.KEY, key);
         return getUser(uriBuilder);
     }
 
     @Override
     public Future<UserBean> getCurrentUser() throws URISyntaxException {
-        log.info("Getting curent user");
-        URIBuilder uriBuilder = buildPath(USER, CURRENT);
+        log.info("Getting current user");
+        URIBuilder uriBuilder = buildPath(RestPathConstants.USER, RestPathConstants.CURRENT);
         return getUser(uriBuilder);
     }
 
     @Override
     public Future<UserBean> getAnonymousUser() throws URISyntaxException {
         log.info("Getting anonymous user");
-        URIBuilder uriBuilder = buildPath(USER, ANONYMUS);
+        URIBuilder uriBuilder = buildPath(RestPathConstants.USER, RestPathConstants.ANONYMOUS);
         return getUser(uriBuilder);
     }
 
     private Future<UserBean> getUser(URIBuilder uriBuilder) {
         return executorService.submit(() -> {
-            HttpGet method = HttpMethodFactory.createGetMethod(uriBuilder.build());
-            return executeRequest(method, UserBean.class);
+        		return executeGetRequest(uriBuilder.build(), UserBean.class);
         });
     }
 }

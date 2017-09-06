@@ -28,7 +28,7 @@ public interface RestPathConstants {
 
     String CURRENT = "/current";
 
-    String ANONYMUS = "/anonymous";
+    String ANONYMOUS = "/anonymous";
 
     String SPACE = "/space";
 

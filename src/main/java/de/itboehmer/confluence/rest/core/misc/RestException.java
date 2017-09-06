@@ -16,11 +16,6 @@
  */
 package de.itboehmer.confluence.rest.core.misc;
 
-import org.apache.http.StatusLine;
-import org.apache.http.client.methods.CloseableHttpResponse;
-
-import java.io.IOException;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,27 +37,12 @@ public class RestException extends Exception {
     
     private final String message;
     
-    protected RestException(int statusCode, String reasonphrase, String responseBody, String message, Throwable cause) {
+    public RestException(int statusCode, String reasonphrase, String responseBody, String message, Throwable cause) {
         super(cause);
         this.statusCode = statusCode;
         this.reasonPhrase = reasonphrase;
         this.responseBody = responseBody;
         this.message = message;
-    }
-    
-    public RestException(CloseableHttpResponse response) {
-        StatusLine statusLine = response.getStatusLine();
-        this.statusCode = statusLine.getStatusCode();
-        this.reasonPhrase = statusLine.getReasonPhrase();
-        try {
-            if (response.getEntity() != null && response.getEntity().getContent() != null) {
-                this.responseBody = IOUtils.toString(response.getEntity().getContent());
-            }
-        } catch (IOException ioe) {
-            log.warn(("Error reading response " + response));
-        }
-        boolean hasBody = (this.responseBody != null);
-        this.message = "Status: " + this.statusCode + ". Reason: " + this.reasonPhrase + ". Has body: " + hasBody;
     }
     
     @Override

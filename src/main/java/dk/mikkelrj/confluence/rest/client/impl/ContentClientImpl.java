@@ -14,9 +14,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.itboehmer.confluence.rest.core;
+package dk.mikkelrj.confluence.rest.client.impl;
 
-import de.itboehmer.confluence.rest.ConfluenceRestClient;
+import static de.itboehmer.confluence.rest.core.misc.RestParamConstants.EXPAND;
+import static de.itboehmer.confluence.rest.core.misc.RestParamConstants.LIMIT;
+import static de.itboehmer.confluence.rest.core.misc.RestParamConstants.POSTING_DAY;
+import static de.itboehmer.confluence.rest.core.misc.RestParamConstants.SPACEKEY;
+import static de.itboehmer.confluence.rest.core.misc.RestParamConstants.START;
+import static de.itboehmer.confluence.rest.core.misc.RestParamConstants.STATUS;
+import static de.itboehmer.confluence.rest.core.misc.RestParamConstants.TITLE;
+import static de.itboehmer.confluence.rest.core.misc.RestParamConstants.TYPE;
+import static de.itboehmer.confluence.rest.core.misc.RestParamConstants.VERSION;
+import static de.itboehmer.confluence.rest.core.misc.RestPathConstants.CONTENT;
+import static de.itboehmer.confluence.rest.core.misc.RestPathConstants.CONTENT_ATTACHMENT;
+import static de.itboehmer.confluence.rest.core.misc.RestPathConstants.CONTENT_LABEL;
+import static de.itboehmer.confluence.rest.core.misc.RestPathConstants.SPECIFIC_CONTENT;
+
+import java.io.InputStream;
+import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.message.BasicNameValuePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.itboehmer.confluence.rest.client.ContentClient;
 import de.itboehmer.confluence.rest.core.domain.content.AttachmentBean;
 import de.itboehmer.confluence.rest.core.domain.content.AttachmentResultsBean;
@@ -27,40 +57,21 @@ import de.itboehmer.confluence.rest.core.domain.content.LabelsBean;
 import de.itboehmer.confluence.rest.core.misc.ContentStatus;
 import de.itboehmer.confluence.rest.core.misc.ContentType;
 import de.itboehmer.confluence.rest.core.misc.UnexpectedContentException;
-import de.itboehmer.confluence.rest.core.util.HttpMethodFactory;
-import de.itboehmer.confluence.rest.core.util.URIHelper;
-import java.io.InputStream;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.message.BasicNameValuePair;
-
-import java.net.URI;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import dk.mikkelrj.confluence.rest.core.RequestService;
+import dk.mikkelrj.confluence.rest.core.impl.AtlassianAPIConfig;
 
 /**
  * @author Christian Schulze (c.schulze@micromata.de)
  * @author Martin Böhmer
  */
-public class ContentClientImpl extends BaseClient implements ContentClient {
+public class ContentClientImpl extends BaseClientImpl implements ContentClient {
 
     private final Logger log = LoggerFactory.getLogger(ContentClientImpl.class);
 
     public SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    public ContentClientImpl(ConfluenceRestClient confluenceRestClient, ExecutorService executorService) {
-        super(confluenceRestClient, executorService);
+    public ContentClientImpl(ExecutorService executorService, RequestService requestService, AtlassianAPIConfig apiConfig) {
+        super(executorService, requestService, apiConfig);
     }
 
     @Override
@@ -71,7 +82,7 @@ public class ContentClientImpl extends BaseClient implements ContentClient {
         }
         return executorService.submit(() -> {
             // URI with parameters
-            URIBuilder uriBuilder = URIHelper.buildPath(baseUri, CONTENT, id);
+            URIBuilder uriBuilder = buildPath(CONTENT, id);
             if (version > 0) {
                 uriBuilder.addParameter(VERSION, String.valueOf(version));
             }
@@ -79,8 +90,7 @@ public class ContentClientImpl extends BaseClient implements ContentClient {
                 String join = StringUtils.join(expand, ",");
                 uriBuilder.addParameter(EXPAND, join);
             }
-            HttpGet method = HttpMethodFactory.createGetMethod(uriBuilder.build());
-            return executeRequest(method, ContentBean.class);
+            return executeGetRequest(uriBuilder.build(), ContentBean.class);
         });
     }
 
@@ -121,8 +131,7 @@ public class ContentClientImpl extends BaseClient implements ContentClient {
         uriBuilder.addParameters(nameValuePairs);
         // Request
         return executorService.submit(() -> {
-            HttpGet method = HttpMethodFactory.createGetMethod(uriBuilder.build());
-            return executeRequest(method, ContentResultsBean.class);
+            return executeGetRequest(uriBuilder.build(), ContentResultsBean.class);
         });
     }
 
@@ -132,31 +141,25 @@ public class ContentClientImpl extends BaseClient implements ContentClient {
             String spaceKey = (content.getSpace() != null) ? content.getSpace().getKey() : null;
             log.info(String.format(message, content.getTitle(), spaceKey));
         }
-        // Encode content
-        String body = gson.toJson(content);
         // Request
         return executorService.submit(() -> {
             URI uri = buildPath(CONTENT).build();
-            HttpPost method = HttpMethodFactory.createPostMethod(uri, body);
-            return executeRequest(method, ContentBean.class);
+            return executePostRequest(uri, content, ContentBean.class);
         });
     }
 
-    @Override
+	@Override
     public Future<ContentBean> updateContent(ContentBean content) {
         if (log.isInfoEnabled()) {
             String message = "Updating content. Title=%1$s, space=%2$s";
             String spaceKey = (content.getSpace() != null) ? content.getSpace().getKey() : null;
             log.info(String.format(message, content.getTitle(), spaceKey));
         }
-        // Encode content
-        String body = gson.toJson(content);
         // Request
         return executorService.submit(() -> {
             String contentUriPath = String.format(SPECIFIC_CONTENT, content.getId());
             URI uri = buildPath(contentUriPath).build();
-            HttpPut method = HttpMethodFactory.createPutMethod(uri, body);
-            return executeRequest(method, ContentBean.class);
+            return executePostRequest(uri, content, ContentBean.class);
         });
     }
 
@@ -172,8 +175,8 @@ public class ContentClientImpl extends BaseClient implements ContentClient {
                 comment = attachment.getMetadata().getComment();
             }
             // Request
-            HttpPost method = HttpMethodFactory.createPostMethodForUpload(uri, attachment.getInputStream(), attachment.getTitle(), comment);
-            AttachmentResultsBean results = executeRequest(method, AttachmentResultsBean.class);
+            AttachmentResultsBean results = executePostRequestForUpload(uri, attachment.getInputStream(), attachment.getTitle(), comment, AttachmentResultsBean.class);
+            
             // Extract result
             int numberOfResults = 0;
             if (results.getResults() != null) {
@@ -187,7 +190,7 @@ public class ContentClientImpl extends BaseClient implements ContentClient {
         });
     }
 
-    @Override
+	@Override
     public Future<InputStream> downloadAttachement(AttachmentBean attachment) {
         // Check input
         if (attachment.getId() == null) {
@@ -210,8 +213,7 @@ public class ContentClientImpl extends BaseClient implements ContentClient {
             }
             URI uri = buildNonRestPath(downloadUriPath).build();
             // Request
-            HttpGet method = HttpMethodFactory.createGetMethodForDownload(uri);
-            return executeRequest(method);
+            return executeGetRequestForDownload(uri);
         });
     }
 
@@ -222,16 +224,12 @@ public class ContentClientImpl extends BaseClient implements ContentClient {
             log.info(String.format(message, content.getId(), labels));
         }
 
-        // Encode content
-        String body = gson.toJson(labels);
-
         return executorService.submit(() -> {
             // URI
             String attachmentUriPath = String.format(CONTENT_LABEL, content.getId());
             URI uri = buildPath(attachmentUriPath).build();
             // Request
-            HttpPost method = HttpMethodFactory.createPostMethod(uri, body);
-            return executeRequest(method, LabelsBean.class);
+            return executePostRequest(uri, content, LabelsBean.class);
         });
     }
 

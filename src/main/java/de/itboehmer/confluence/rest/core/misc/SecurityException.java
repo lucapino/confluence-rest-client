@@ -15,8 +15,6 @@
  */
 package de.itboehmer.confluence.rest.core.misc;
 
-import org.apache.http.client.methods.CloseableHttpResponse;
-
 /**
  * @author Martin Böhmer
  */
@@ -26,10 +24,6 @@ public class SecurityException extends RestException {
 
     public SecurityException(int statusCode, String reasonPhrase, String message, Throwable cause) {
         super(statusCode, reasonPhrase, null, message, cause);
-    }
-
-    public SecurityException(CloseableHttpResponse response) {
-        super(response);
     }
 
 }
