@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.mikkelrj.confluence.rest.client.impl;
+package de.itboehmer.confluence.rest.client.impl;
 
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutorService;
@@ -26,11 +26,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.itboehmer.confluence.rest.client.UserClient;
+import de.itboehmer.confluence.rest.core.RequestService;
 import de.itboehmer.confluence.rest.core.domain.UserBean;
+import de.itboehmer.confluence.rest.core.impl.APIUriProvider;
 import de.itboehmer.confluence.rest.core.misc.RestParamConstants;
 import de.itboehmer.confluence.rest.core.misc.RestPathConstants;
-import dk.mikkelrj.confluence.rest.core.RequestService;
-import dk.mikkelrj.confluence.rest.core.impl.AtlassianAPIConfig;
 
 /**
  * @author Christian Schulze (c.schulze@micromata.de)
@@ -40,7 +40,7 @@ public class UserClientImpl extends BaseClientImpl implements UserClient {
     
     private final Logger log = LoggerFactory.getLogger(UserClientImpl.class);
 
-    public UserClientImpl(ExecutorService executorService, RequestService requestService, AtlassianAPIConfig apiConfig) {
+    public UserClientImpl(ExecutorService executorService, RequestService requestService, APIUriProvider apiConfig) {
         super(executorService, requestService, apiConfig);
     }
 

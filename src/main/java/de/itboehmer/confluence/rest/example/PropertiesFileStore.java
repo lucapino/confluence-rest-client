@@ -1,4 +1,4 @@
-package dk.mikkelrj.confluence.rest.example;
+package de.itboehmer.confluence.rest.example;
 
 import java.io.Closeable;
 import java.io.File;
@@ -14,7 +14,6 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-import dk.mikkelrj.confluence.rest.oauth.OAuthProperties;
 
 /**
  * Reads properties from a file.
@@ -30,16 +29,10 @@ public class PropertiesFileStore {
 		this.defaultValues = defaultValues;
     }
 
-    
-    public OAuthProperties getOAuthProperties() {
-    		return new OAuthProperties(getPropertiesMap());
-    }
-    
-    public Map<String, String> getPropertiesMap() {
+    public Map<String, String> getProperties() {
         try {
             return toMap(tryGetProperties());
         } catch (FileNotFoundException e) {
-        		// TODO move this behavior out of the store
             tryCreateDefaultFile();
             return new HashMap<>(defaultValues);
         } catch (IOException e) {
@@ -47,8 +40,8 @@ public class PropertiesFileStore {
         }
     }
 
-    public void setProperties(OAuthProperties properties) {
-    		savePropertiesToFile(properties.toMap());
+    public void setProperties(Map<String, String> properties) {
+    		savePropertiesToFile(properties);
     }
     
     private Map<String, String> toMap(Properties properties) {
@@ -83,7 +76,13 @@ public class PropertiesFileStore {
         } catch (Exception e) {
             System.out.println("Exception: " + e);
         } finally {
-            closeQuietly(outputStream);
+            try {
+			    if (outputStream != null) {
+			        outputStream.close();
+			    }
+			} catch (IOException e) {
+			    // ignored
+			}
         }
     }
 
@@ -98,16 +97,6 @@ public class PropertiesFileStore {
             return Optional.of(file);
         } catch (IOException e) {
             return Optional.empty();
-        }
-    }
-
-    private void closeQuietly(Closeable closeable) {
-        try {
-            if (closeable != null) {
-                closeable.close();
-            }
-        } catch (IOException e) {
-            // ignored
         }
     }
 }

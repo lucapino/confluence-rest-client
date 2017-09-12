@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.mikkelrj.confluence.rest.client.impl;
+package de.itboehmer.confluence.rest.client.impl;
 
 import static de.itboehmer.confluence.rest.core.misc.RestParamConstants.EXPAND;
 import static de.itboehmer.confluence.rest.core.misc.RestParamConstants.LABEL;
@@ -36,19 +36,19 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.message.BasicNameValuePair;
 
 import de.itboehmer.confluence.rest.client.SpaceClient;
+import de.itboehmer.confluence.rest.core.RequestService;
 import de.itboehmer.confluence.rest.core.domain.space.SpaceBean;
 import de.itboehmer.confluence.rest.core.domain.space.SpaceResultsBean;
+import de.itboehmer.confluence.rest.core.impl.APIUriProvider;
 import de.itboehmer.confluence.rest.core.misc.SpaceStatus;
 import de.itboehmer.confluence.rest.core.misc.SpaceType;
-import dk.mikkelrj.confluence.rest.core.RequestService;
-import dk.mikkelrj.confluence.rest.core.impl.AtlassianAPIConfig;
 
 /**
  * Author: Christian Schulze (c.schulze@micromata.de) Date: 02.07.2016
  */
 public class SpaceClientImpl extends BaseClientImpl implements SpaceClient {
 
-	public SpaceClientImpl(ExecutorService executorService, RequestService requestService, AtlassianAPIConfig apiConfig) {
+	public SpaceClientImpl(ExecutorService executorService, RequestService requestService, APIUriProvider apiConfig) {
 		super(executorService, requestService, apiConfig);
 	}
 

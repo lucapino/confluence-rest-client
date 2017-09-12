@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.mikkelrj.confluence.rest.client.impl;
+package de.itboehmer.confluence.rest.client.impl;
 
 import static de.itboehmer.confluence.rest.core.misc.RestParamConstants.CQL;
 import static de.itboehmer.confluence.rest.core.misc.RestParamConstants.CQL_CONTEXT;
@@ -37,10 +37,10 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.message.BasicNameValuePair;
 
 import de.itboehmer.confluence.rest.client.SearchClient;
+import de.itboehmer.confluence.rest.core.RequestService;
 import de.itboehmer.confluence.rest.core.cql.CqlSearchBean;
 import de.itboehmer.confluence.rest.core.domain.cql.CqlSearchResult;
-import dk.mikkelrj.confluence.rest.core.RequestService;
-import dk.mikkelrj.confluence.rest.core.impl.AtlassianAPIConfig;
+import de.itboehmer.confluence.rest.core.impl.APIUriProvider;
 
 /**
  * Implementation of {@link SearchClient} to query content by CQL.
@@ -50,7 +50,7 @@ import dk.mikkelrj.confluence.rest.core.impl.AtlassianAPIConfig;
  */
 public class SearchClientImpl extends BaseClientImpl implements SearchClient {
 
-	public SearchClientImpl(ExecutorService executorService, RequestService requestService, AtlassianAPIConfig apiConfig) {
+	public SearchClientImpl(ExecutorService executorService, RequestService requestService, APIUriProvider apiConfig) {
 		super(executorService, requestService, apiConfig);
 	}
 

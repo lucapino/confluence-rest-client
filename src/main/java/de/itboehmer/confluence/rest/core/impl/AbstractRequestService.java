@@ -1,4 +1,4 @@
-package dk.mikkelrj.confluence.rest.core.impl;
+package de.itboehmer.confluence.rest.core.impl;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

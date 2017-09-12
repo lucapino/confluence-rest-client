@@ -1,33 +1,51 @@
 # ConfluenceRestClient
 
-A simple Java Client to communicate with the Confluence Rest API.
+A simple Java Client to communicate with the Confluence REST API.
 
 ## Version
 
-Current release: `0.8.0`
+Current release: `0.8.2`
 
-There still some parts of the client that require revision and refactoring.
+This is a reworked version of [ConfluenceRestClient](https://github.com/MartinBoehmer/ConfluenceRestClient).
+Thsi version decouples the HTTP-specific code from the Confluence client code so
+that it, for example, is possible to implement the client using other third party libraries, 
+or using a different form of authentication). This version also separates the API
+(now in the src/api folder) from the implementation (in the src/main folder).
 
 ## Usage
 
-Create a new instance of ConfluenceRestClient and call the method 'connect()'.
-You need the URI of the Confluence Server an your login credentials.
+You must first get a RequestService to perform REST calls. 
+One called HttpAuthRequestService is provided, which uses Basic HTTP 
+authentication. Then connect using the URI of the Confluence server 
+and your credentials:
+
+```java
+HttpAuthRequestService requestService = new HttpAuthRequestService();
+requestService.connect(new URI("https://example.com"), "admin", "admin");
+```
+
+You can then create the client factory, providing the RequestService, an 
+ExecutorService, and an APIUriProvider that configures the Confluence REST 
+end point:
 
 ```java
 ExecutorService executorService = Executors.newCachedThreadPool();
-ConfluenceRestClient confluenceClient = new ConfluenceRestClient(executorService);
-URI confluenceBaseUri = new URI("https://example.com);
-confluenceClient.connect(confluenceBaseUri, "username", "password");
+APIUriProvider uriProvider = new APIUriProvider(new URI(conf.getBaseUrl() + "/wiki"));
+ClientFactory factory = new ClientFactoryImpl(executorService, requestService, apiConfig);
 ```
 
-Then you get seperated clients for the different entities:
+With this factory you can then create one of four separate clients for the different parts 
+of the REST API:
 
 * SpaceClient
 * UserClient
 * ContentClient
+* SearchClient
+
+To create an interface for working with content:
 
 ```java
-ContentClient contentClient = confluenceClient.getContentClient();
+ContentClient contentClient = clientFactory.getContentClient();
 List<String> expand = new ArrayList<>();
 expand.add(ExpandField.BODY_VIEW.getName());
 expand.add(ExpandField.BODY_STORAGE.getName());
@@ -38,7 +56,9 @@ ContentBean content = future.get();
 
 ## License
 
-Copyright 2017 Martin Böhmer
+Copyright 2016 Micromata GmbH
+Modifications Copyright 2017 Martin Böhmer
+Modifications Copyright 2017 Mikkel R. Jakobsen
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use these files except in compliance with the License.
 You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0

@@ -1,22 +1,22 @@
-package dk.mikkelrj.confluence.rest.client.impl;
+package de.itboehmer.confluence.rest.client.impl;
 
 import java.util.concurrent.ExecutorService;
 
+import de.itboehmer.confluence.rest.client.ClientFactory;
 import de.itboehmer.confluence.rest.client.ContentClient;
 import de.itboehmer.confluence.rest.client.SearchClient;
 import de.itboehmer.confluence.rest.client.SpaceClient;
 import de.itboehmer.confluence.rest.client.UserClient;
-import dk.mikkelrj.confluence.rest.client.ClientFactory;
-import dk.mikkelrj.confluence.rest.core.RequestService;
-import dk.mikkelrj.confluence.rest.core.impl.AtlassianAPIConfig;
+import de.itboehmer.confluence.rest.core.RequestService;
+import de.itboehmer.confluence.rest.core.impl.APIUriProvider;
 
 public final class ClientFactoryImpl implements ClientFactory {
 
 	private final ExecutorService executorService;
 	private final RequestService requestService;
-	private final AtlassianAPIConfig apiConfig;
+	private final APIUriProvider apiConfig;
 	
-	public ClientFactoryImpl(ExecutorService executorService, RequestService requestService, AtlassianAPIConfig apiConfig) {
+	public ClientFactoryImpl(ExecutorService executorService, RequestService requestService, APIUriProvider apiConfig) {
 		this.executorService = executorService;
 		this.requestService = requestService;
 		this.apiConfig = apiConfig;

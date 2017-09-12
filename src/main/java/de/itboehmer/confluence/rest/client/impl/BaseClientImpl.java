@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.mikkelrj.confluence.rest.client.impl;
+package de.itboehmer.confluence.rest.client.impl;
 
 import java.io.InputStream;
 import java.net.URI;
@@ -22,11 +22,11 @@ import java.util.concurrent.ExecutorService;
 
 import org.apache.http.client.utils.URIBuilder;
 
+import de.itboehmer.confluence.rest.core.RequestException;
+import de.itboehmer.confluence.rest.core.RequestService;
 import de.itboehmer.confluence.rest.core.domain.content.AttachmentResultsBean;
+import de.itboehmer.confluence.rest.core.impl.APIUriProvider;
 import de.itboehmer.confluence.rest.core.util.URIHelper;
-import dk.mikkelrj.confluence.rest.core.RequestException;
-import dk.mikkelrj.confluence.rest.core.RequestService;
-import dk.mikkelrj.confluence.rest.core.impl.AtlassianAPIConfig;
 
 /**
  * @author Christian Schulze (c.schulze@micromata.de)
@@ -38,9 +38,9 @@ public abstract class BaseClientImpl {
 
 	private RequestService requestService;
 
-	private AtlassianAPIConfig apiConfig;
+	private APIUriProvider apiConfig;
 
-    public BaseClientImpl(ExecutorService executorService, RequestService requestService, AtlassianAPIConfig apiConfig) {
+    public BaseClientImpl(ExecutorService executorService, RequestService requestService, APIUriProvider apiConfig) {
         this.executorService = executorService;
         this.requestService = requestService;
 		this.apiConfig = apiConfig;

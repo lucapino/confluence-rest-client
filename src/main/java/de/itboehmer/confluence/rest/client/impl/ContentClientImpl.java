@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.mikkelrj.confluence.rest.client.impl;
+package de.itboehmer.confluence.rest.client.impl;
 
 import static de.itboehmer.confluence.rest.core.misc.RestParamConstants.EXPAND;
 import static de.itboehmer.confluence.rest.core.misc.RestParamConstants.LIMIT;
@@ -48,17 +48,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.itboehmer.confluence.rest.client.ContentClient;
+import de.itboehmer.confluence.rest.core.RequestService;
 import de.itboehmer.confluence.rest.core.domain.content.AttachmentBean;
 import de.itboehmer.confluence.rest.core.domain.content.AttachmentResultsBean;
 import de.itboehmer.confluence.rest.core.domain.content.ContentBean;
 import de.itboehmer.confluence.rest.core.domain.content.ContentResultsBean;
 import de.itboehmer.confluence.rest.core.domain.content.LabelBean;
 import de.itboehmer.confluence.rest.core.domain.content.LabelsBean;
+import de.itboehmer.confluence.rest.core.impl.APIUriProvider;
 import de.itboehmer.confluence.rest.core.misc.ContentStatus;
 import de.itboehmer.confluence.rest.core.misc.ContentType;
 import de.itboehmer.confluence.rest.core.misc.UnexpectedContentException;
-import dk.mikkelrj.confluence.rest.core.RequestService;
-import dk.mikkelrj.confluence.rest.core.impl.AtlassianAPIConfig;
 
 /**
  * @author Christian Schulze (c.schulze@micromata.de)
@@ -70,7 +70,7 @@ public class ContentClientImpl extends BaseClientImpl implements ContentClient {
 
     public SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    public ContentClientImpl(ExecutorService executorService, RequestService requestService, AtlassianAPIConfig apiConfig) {
+    public ContentClientImpl(ExecutorService executorService, RequestService requestService, APIUriProvider apiConfig) {
         super(executorService, requestService, apiConfig);
     }
 

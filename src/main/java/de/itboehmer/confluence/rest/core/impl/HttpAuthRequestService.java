@@ -1,4 +1,4 @@
-package dk.mikkelrj.confluence.rest.core.impl;
+package de.itboehmer.confluence.rest.core.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,11 +36,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.stream.JsonReader;
 
+import de.itboehmer.confluence.rest.core.RequestException;
+import de.itboehmer.confluence.rest.core.RequestService;
 import de.itboehmer.confluence.rest.core.misc.RestException;
 import de.itboehmer.confluence.rest.core.misc.SecurityException;
 import de.itboehmer.confluence.rest.core.util.HttpMethodFactory;
-import dk.mikkelrj.confluence.rest.core.RequestException;
-import dk.mikkelrj.confluence.rest.core.RequestService;
 
 /**
  * {@link RequestService} implementation based on basic authentication.
@@ -56,19 +56,12 @@ public class HttpAuthRequestService extends AbstractRequestService implements Re
 	private HttpHost proxy;
 	private HttpClientContext clientContext;
 
-	public HttpAuthRequestService(URI uri, String username, String password)
+	public void connect(URI uri, String username, String password)
 			throws URISyntaxException, SecurityException {
-		super();
 		connect(uri, username, password, null);
 	}
-
-	public HttpAuthRequestService(URI uri, String username, String password, HttpHost proxyHost)
-			throws URISyntaxException, SecurityException {
-		super();
-		connect(uri, username, password, proxyHost);
-	}
-
-	private void connect(URI uri, String username, String password, HttpHost proxyHost)
+	
+	public void connect(URI uri, String username, String password, HttpHost proxyHost)
 			throws URISyntaxException, SecurityException {
 		log.info("Setting up REST client:");
 		this.proxy = proxyHost;
@@ -146,18 +139,6 @@ public class HttpAuthRequestService extends AbstractRequestService implements Re
 			log.debug("Caught " + e + ". Transforming and throwing " + URISyntaxException.class);
 			throw new URISyntaxException(uri.toString(), "URI is not a valid URL: " + e.getMessage(), 0);
 		}
-	}
-
-	public HttpHost getProxy() {
-		return proxy;
-	}
-
-	public HttpClientContext getClientContext() {
-		return clientContext;
-	}
-
-	public CloseableHttpClient getHttpclient() {
-		return httpclient;
 	}
 
 	private JsonReader getJsonReader(CloseableHttpResponse response) throws IOException {

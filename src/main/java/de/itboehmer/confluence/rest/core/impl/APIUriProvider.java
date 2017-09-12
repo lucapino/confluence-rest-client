@@ -1,25 +1,25 @@
-package dk.mikkelrj.confluence.rest.core.impl;
+package de.itboehmer.confluence.rest.core.impl;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.apache.commons.lang3.Validate;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Preconditions;
-
 import de.itboehmer.confluence.rest.core.misc.RestPathConstants;
 
-public class AtlassianAPIConfig {
+public class APIUriProvider {
 
-	private static final Logger log = LoggerFactory.getLogger(AtlassianAPIConfig.class);
+	private static final Logger log = LoggerFactory.getLogger(APIUriProvider.class);
 	
     private URI baseUri;
     private URI restApiBaseUri;
 
-    public AtlassianAPIConfig(URI uri) throws URISyntaxException {
-		this.baseUri = Preconditions.checkNotNull(uri);
+    public APIUriProvider(URI uri) throws URISyntaxException {
+    		Validate.notNull(uri);
+		this.baseUri = uri;
         this.restApiBaseUri = buildRestApiBaseURI(uri);
         log.info("  URI: " + this.restApiBaseUri);
 	}

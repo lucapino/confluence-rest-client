@@ -1,4 +1,4 @@
-package dk.mikkelrj.confluence.rest.core;
+package de.itboehmer.confluence.rest.core;
 
 import java.io.InputStream;
 import java.net.URI;
