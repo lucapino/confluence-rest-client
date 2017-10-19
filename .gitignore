@@ -1,7 +1,4 @@
 target/
-.idea/
-ConfluenceRestClient.iml
-bin/
 .classpath
 .settings/
 .project
