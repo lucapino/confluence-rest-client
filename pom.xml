@@ -24,6 +24,18 @@ limitations under the License.
     <artifactId>confluence-rest-client</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+    
+    <name>Confluence REST Client</name>
+    <url>https://github.com/lucapino/confluence-rest-client</url>
+    <description>REST Client for interact with Confluence wiki</description>
+    <inceptionYear>2016</inceptionYear>
+    
+    <scm>
+        <connection>scm:git:git@github.com:lucapino/confluence-rest-client.git</connection>
+        <developerConnection>scm:git:git@github.com:lucapino/confluence-rest-client.git</developerConnection>
+        <url>https://github.com/lucapino/confluence-rest-client.git</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
