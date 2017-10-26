@@ -2,6 +2,13 @@
 
 A simple Java Client to communicate with the Confluence REST API.
 
+[![][Build Status img]][Build Status]
+[![][Coverage Status img]][Coverage Status]
+[![][Dependency Status img]][Dependency Status]
+[![][license img]][license]
+[![][Maven Central img]][Maven Central]
+[![][Javadocs img]][Javadocs]
+
 ## Version
 
 Current release: `1.0.0`
@@ -66,3 +73,18 @@ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and limitations under the License.
+
+[Build Status]:https://travis-ci.org/lucapino/confluence-rest-client
+[Build Status img]:https://travis-ci.org/lucapino/confluence-rest-client.svg?branch=master
+
+[Coverage Status]:https://codecov.io/gh/lucapino/confluence-rest-client
+[Coverage Status img]:https://codecov.io/gh/lucapino/confluence-rest-client/branch/master/graph/badge.svg
+
+[license]:LICENSE
+[license img]:https://img.shields.io/badge/license-Apache%202-blue.svg
+
+[Maven Central]:https://maven-badges.herokuapp.com/maven-central/com.github.lucapino/confluence-rest-client
+[Maven Central img]:https://maven-badges.herokuapp.com/maven-central/com.github.lucapino/confluence-rest-client/badge.svg
+
+[Javadocs]:http://www.javadoc.io/doc/com.github.lucapino/confluence-rest-client
+[Javadocs img]:http://javadoc.io/badge/com.github.lucapino/confluence-rest-client.svg
