@@ -51,6 +51,8 @@ import com.github.lucapino.confluence.rest.client.api.ContentClient;
 import com.github.lucapino.confluence.rest.core.api.RequestService;
 import com.github.lucapino.confluence.rest.core.api.domain.content.AttachmentBean;
 import com.github.lucapino.confluence.rest.core.api.domain.content.AttachmentResultsBean;
+import com.github.lucapino.confluence.rest.core.api.domain.content.CommentBean;
+import com.github.lucapino.confluence.rest.core.api.domain.content.CommentResultsBean;
 import com.github.lucapino.confluence.rest.core.api.domain.content.ContentBean;
 import com.github.lucapino.confluence.rest.core.api.domain.content.ContentResultsBean;
 import com.github.lucapino.confluence.rest.core.api.domain.content.LabelBean;
@@ -58,6 +60,7 @@ import com.github.lucapino.confluence.rest.core.api.domain.content.LabelsBean;
 import com.github.lucapino.confluence.rest.core.impl.APIUriProvider;
 import com.github.lucapino.confluence.rest.core.api.misc.ContentStatus;
 import com.github.lucapino.confluence.rest.core.api.misc.ContentType;
+import com.github.lucapino.confluence.rest.core.api.misc.RestPathConstants;
 import com.github.lucapino.confluence.rest.core.api.misc.UnexpectedContentException;
 
 /**
@@ -136,6 +139,108 @@ public class ContentClientImpl extends BaseClientImpl implements ContentClient {
     }
 
     @Override
+    public Future<CommentResultsBean> getComment(String spacekey, String title, ContentStatus status, Date postingDay, List<String> expand, int start, int limit) {
+        // first we search for the parent content to get its id
+
+        if (log.isInfoEnabled()) {
+            String message = "Getting comment. Space=%1$s, pageTitle=%2$s, status=%3$s, postingDay=%4$s, expand=%5$s, start=%6$s, limit=%7$s";
+            log.info(String.format(message, spacekey, title, status, postingDay, expand, start, limit));
+        }
+
+        // Request
+        return executorService.submit(() -> {
+            if (log.isInfoEnabled()) {
+                String message = "Getting content. Type=%1$s, space=%2$s, title=%3$s, status=%4$s, postingDay=%5$s, expand=%6$s, start=%7$s, limit=%8$s";
+                log.info(String.format(message, ContentType.PAGE, spacekey, title, status, postingDay, expand, start, limit));
+            }
+            // URI with parameters
+            URIBuilder pageUriBuilder = buildPath(CONTENT);
+            List<NameValuePair> pageNameValuePairs = new ArrayList<>();
+            pageNameValuePairs.add(new BasicNameValuePair(TYPE, ContentType.PAGE.getName()));
+            if (StringUtils.trimToNull(spacekey) != null) {
+                pageNameValuePairs.add(new BasicNameValuePair(SPACEKEY, spacekey));
+            }
+            if (StringUtils.trimToNull(title) != null) {
+                pageNameValuePairs.add(new BasicNameValuePair(TITLE, title));
+            }
+            if (status != null) {
+                pageNameValuePairs.add(new BasicNameValuePair(STATUS, status.getName()));
+            }
+            if (postingDay != null) {
+                pageNameValuePairs.add(new BasicNameValuePair(POSTING_DAY, sdf.format(postingDay)));
+            }
+            if (expand != null && expand.isEmpty() == false) {
+                String join = StringUtils.join(expand, ",");
+                pageNameValuePairs.add(new BasicNameValuePair(EXPAND, join));
+            }
+            if (start > 0) {
+                pageNameValuePairs.add(new BasicNameValuePair(START, String.valueOf(start)));
+            }
+            if (limit > 0) {
+                pageNameValuePairs.add(new BasicNameValuePair(LIMIT, String.valueOf(limit)));
+            }
+            pageUriBuilder.addParameters(pageNameValuePairs);
+            ContentResultsBean executeGetRequest = executeGetRequest(pageUriBuilder.build(), ContentResultsBean.class);
+            String pageId = executeGetRequest.getResults().get(0).getId();
+            // URI with parameters
+            URIBuilder uriBuilder = buildPath(String.format(RestPathConstants.CONTENT_COMMENT, pageId));
+            List<NameValuePair> nameValuePairs = new ArrayList<>();
+
+            if (StringUtils.trimToNull(spacekey) != null) {
+                nameValuePairs.add(new BasicNameValuePair(SPACEKEY, spacekey));
+            }
+            if (StringUtils.trimToNull(title) != null) {
+                nameValuePairs.add(new BasicNameValuePair(TITLE, title));
+            }
+            if (status != null) {
+                nameValuePairs.add(new BasicNameValuePair(STATUS, status.getName()));
+            }
+            if (postingDay != null) {
+                nameValuePairs.add(new BasicNameValuePair(POSTING_DAY, sdf.format(postingDay)));
+            }
+            if (expand != null && expand.isEmpty() == false) {
+                String join = StringUtils.join(expand, ",");
+                nameValuePairs.add(new BasicNameValuePair(EXPAND, join));
+            }
+            if (start > 0) {
+                nameValuePairs.add(new BasicNameValuePair(START, String.valueOf(start)));
+            }
+            if (limit > 0) {
+                nameValuePairs.add(new BasicNameValuePair(LIMIT, String.valueOf(limit)));
+            }
+            uriBuilder.addParameters(nameValuePairs);
+            return executeGetRequest(uriBuilder.build(), CommentResultsBean.class);
+        });
+    }
+
+    @Override
+    public Future<CommentBean> createComment(CommentBean comment) {
+        if (log.isInfoEnabled()) {
+            String message = "Creating comment. Value=%1$s, representation=%2$s";
+            log.info(String.format(message, comment.getBody().getStorage().getValue(), comment.getBody().getStorage().getRepresentation()));
+        }
+        // Request
+        return executorService.submit(() -> {
+            URI uri = buildPath(CONTENT).build();
+            return executePostRequest(uri, comment, CommentBean.class);
+        });
+    }
+    
+    @Override
+    public Future<CommentBean> updateComment(CommentBean comment) {
+        if (log.isInfoEnabled()) {
+            String message = "Updating comment. Value=%1$s, representation=%2$s";
+            log.info(String.format(message, comment.getBody().getStorage().getValue(), comment.getBody().getStorage().getRepresentation()));
+        }
+        // Request
+        return executorService.submit(() -> {
+            String contentUriPath = String.format(SPECIFIC_CONTENT, comment.getId());
+            URI uri = buildPath(contentUriPath).build();
+            return executePutRequest(uri, comment, CommentBean.class);
+        });
+    }
+
+    @Override
     public Future<ContentBean> createContent(ContentBean content) {
         if (log.isInfoEnabled()) {
             String message = "Creating content. Title=%1$s, space=%2$s";
@@ -160,7 +265,7 @@ public class ContentClientImpl extends BaseClientImpl implements ContentClient {
         return executorService.submit(() -> {
             String contentUriPath = String.format(SPECIFIC_CONTENT, content.getId());
             URI uri = buildPath(contentUriPath).build();
-            return executePostRequest(uri, content, ContentBean.class);
+            return executePutRequest(uri, content, ContentBean.class);
         });
     }
 

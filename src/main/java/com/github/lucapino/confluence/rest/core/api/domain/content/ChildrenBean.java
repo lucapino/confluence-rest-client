@@ -16,8 +16,22 @@
  */
 package com.github.lucapino.confluence.rest.core.api.domain.content;
 
+import com.google.gson.annotations.Expose;
+
 /**
  * @author Christian Schulze (c.schulze@micromata.de)
  */
 public class ChildrenBean {
+
+    @Expose
+    private CommentBean comment;
+
+    public CommentBean getComment() {
+        return comment;
+    }
+
+    public void setComment(CommentBean comment) {
+        this.comment = comment;
+    }
+
 }

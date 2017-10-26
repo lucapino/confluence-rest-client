@@ -31,6 +31,8 @@ public interface RequestService {
     InputStream executeGetRequestForDownload(URI uri) throws RequestException;
 
     <T> T executePostRequest(URI uri, Object content, Class<T> resultClass) throws RequestException;
+    
+    <T> T executePutRequest(URI uri, Object content, Class<T> resultClass) throws RequestException;
 
     <T> T executePostRequestForUpload(URI uri, InputStream inputStream, String title, String comment,
             Class<T> resultClass) throws RequestException;

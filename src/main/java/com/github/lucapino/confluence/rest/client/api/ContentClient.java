@@ -18,6 +18,8 @@
 package com.github.lucapino.confluence.rest.client.api;
 
 import com.github.lucapino.confluence.rest.core.api.domain.content.AttachmentBean;
+import com.github.lucapino.confluence.rest.core.api.domain.content.CommentBean;
+import com.github.lucapino.confluence.rest.core.api.domain.content.CommentResultsBean;
 import com.github.lucapino.confluence.rest.core.api.domain.content.ContentBean;
 import com.github.lucapino.confluence.rest.core.api.domain.content.ContentResultsBean;
 import com.github.lucapino.confluence.rest.core.api.domain.content.LabelBean;
@@ -79,6 +81,53 @@ public interface ContentClient {
             int start,
             int limit);
 
+    /**
+     * Returns a paginated list of Comment.
+     *
+     * @param spacekey   the space key to find content under.
+     * @param pageTitle  the title of the page under wich find comments.
+     * @param status     list of statuses the content to be found is in.
+     *                   Defaults to
+     *                   current is not specified. If set to 'any', content in 'current' and
+     *                   'trashed' status will be fetched. Does not support 'historical' status
+     *                   for now.
+     * @param postingDay the posting day of the blog post.
+     * @param expand     a comma separated list of properties to expand on the
+     *                   content. Default value: history,space,version.
+     * @param start      the start point of the collection to return
+     * @param limit      the limit of the number of items to return, this may be
+     *                   restricted by fixed system limits
+     *
+     * @return A {@link Future} with the {@link CommentResultsBean}
+     */
+    Future<CommentResultsBean> getComment(String spacekey,
+            String pageTitle,
+            ContentStatus status,
+            Date postingDay,
+            List<String> expand,
+            int start,
+            int limit);
+
+    /**
+     * Creates the provided comment.
+     *
+     * @param comment The comment to create.
+     *
+     * @return A {@link Future} with the {@link CommentBean} representing the
+     *         created comment. Use this instance to continue working with the comment.
+     */
+    Future<CommentBean> createComment(CommentBean comment);
+    
+    /**
+     * Updates the provided comment.
+     *
+     * @param comment The comment to update.
+     *
+     * @return A {@link Future} with the {@link CommentBean} representing the
+     *         updated comment. Use this instance to continue working with the comment.
+     */
+    public Future<CommentBean> updateComment(CommentBean comment);
+    
     /**
      * Creates the provided content.
      *

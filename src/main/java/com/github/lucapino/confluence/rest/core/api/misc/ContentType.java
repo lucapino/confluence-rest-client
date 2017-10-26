@@ -22,6 +22,7 @@ package com.github.lucapino.confluence.rest.core.api.misc;
  * @author Martin Böhmer
  */
 public enum ContentType {
+    COMMENT("comment"),
     PAGE("page"),
     BLOGPOST("blogpost"),
     ATTACHMENT("attachment");

@@ -65,6 +65,10 @@ public abstract class BaseClientImpl {
     protected <T> T executePostRequest(URI uri, Object content, Class<T> resultClass) throws RequestException {
         return requestService.executePostRequest(uri, content, resultClass);
     }
+    
+    protected <T> T executePutRequest(URI uri, Object content, Class<T> resultClass) throws RequestException {
+        return requestService.executePutRequest(uri, content, resultClass);
+    }
 
     protected AttachmentResultsBean executePostRequestForUpload(URI uri, InputStream inputStream, String title,
             String comment, Class<AttachmentResultsBean> resultClass) throws RequestException {

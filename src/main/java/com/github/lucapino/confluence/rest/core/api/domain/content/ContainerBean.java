@@ -26,7 +26,10 @@ import com.github.lucapino.confluence.rest.core.api.domain.space.DescriptionBean
 public class ContainerBean {
 
     @Expose
-    private Integer id;
+    private String id;
+
+    @Expose
+    private String type;
 
     @Expose
     private String key;
@@ -51,12 +54,20 @@ public class ContainerBean {
         this.description = description;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getKey() {

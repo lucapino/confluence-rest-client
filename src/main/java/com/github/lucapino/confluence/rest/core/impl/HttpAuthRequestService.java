@@ -57,6 +57,7 @@ import com.github.lucapino.confluence.rest.core.api.RequestService;
 import com.github.lucapino.confluence.rest.core.api.misc.RestException;
 import com.github.lucapino.confluence.rest.core.api.misc.SecurityException;
 import com.github.lucapino.confluence.rest.core.api.util.HttpMethodFactory;
+import org.apache.http.client.methods.HttpPut;
 
 /**
  * {@link RequestService} implementation based on basic authentication.
@@ -229,6 +230,17 @@ public class HttpAuthRequestService extends AbstractRequestService implements Re
         try {
             String body = getGson().toJson(content);
             HttpPost method = HttpMethodFactory.createPostMethod(uri, body);
+            return executeRequest(method, resultClass);
+        } catch (IOException | RestException e) {
+            throw new RequestException(e);
+        }
+    }
+    
+    @Override
+    public <T> T executePutRequest(URI uri, Object content, Class<T> resultClass) throws RequestException {
+        try {
+            String body = getGson().toJson(content);
+            HttpPut method = HttpMethodFactory.createPutMethod(uri, body);
             return executeRequest(method, resultClass);
         } catch (IOException | RestException e) {
             throw new RequestException(e);
