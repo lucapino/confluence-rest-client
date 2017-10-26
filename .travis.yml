@@ -1,0 +1,20 @@
+language: java
+sudo: false
+
+before_cache:
+  # No sense in caching current build artifacts
+  - rm -rf $HOME/.m2/repository/com/github/lucapino
+
+cache:
+  directories:
+    - $HOME/.m2/repository
+jdk:
+  - oraclejdk8
+
+install: /bin/true
+
+script:
+  - mvn package -Dmaven.javadoc.skip=true -V -B
+  
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
