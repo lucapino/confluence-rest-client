@@ -17,10 +17,9 @@ This product makes use of the following software libraries:
   Apache HttpClient Mime under Apache License, Version 2.0
   Apache HttpCore under Apache License, Version 2.0
   Commons Digester under The Apache Software License, Version 2.0
-  confluence-rest-client under Apache License, Version 2.0
+  Confluence REST Client under Apache License, Version 2.0
   Gson under Apache 2.0
   jcommander under Apache 2.0
-  JSON in Java under The JSON License
   jsr311-api under CDDL License
   Logback Classic Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
   Logback Core Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
