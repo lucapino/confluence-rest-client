@@ -29,6 +29,7 @@ import static com.github.lucapino.confluence.rest.core.api.misc.RestPathConstant
 import static com.github.lucapino.confluence.rest.core.api.misc.RestPathConstants.CONTENT_ATTACHMENT;
 import static com.github.lucapino.confluence.rest.core.api.misc.RestPathConstants.CONTENT_LABEL;
 import static com.github.lucapino.confluence.rest.core.api.misc.RestPathConstants.SPECIFIC_CONTENT;
+import static com.github.lucapino.confluence.rest.core.api.misc.RestPathConstants.CONVERT_TO_STORAGE_CONTENT;
 
 import java.io.InputStream;
 import java.net.URI;
@@ -57,6 +58,7 @@ import com.github.lucapino.confluence.rest.core.api.domain.content.ContentBean;
 import com.github.lucapino.confluence.rest.core.api.domain.content.ContentResultsBean;
 import com.github.lucapino.confluence.rest.core.api.domain.content.LabelBean;
 import com.github.lucapino.confluence.rest.core.api.domain.content.LabelsBean;
+import com.github.lucapino.confluence.rest.core.api.domain.content.StorageBean;
 import com.github.lucapino.confluence.rest.core.impl.APIUriProvider;
 import com.github.lucapino.confluence.rest.core.api.misc.ContentStatus;
 import com.github.lucapino.confluence.rest.core.api.misc.ContentType;
@@ -225,7 +227,7 @@ public class ContentClientImpl extends BaseClientImpl implements ContentClient {
             return executePostRequest(uri, comment, CommentBean.class);
         });
     }
-    
+
     @Override
     public Future<CommentBean> updateComment(CommentBean comment) {
         if (log.isInfoEnabled()) {
@@ -336,6 +338,20 @@ public class ContentClientImpl extends BaseClientImpl implements ContentClient {
             URI uri = buildPath(attachmentUriPath).build();
             // Request
             return executePostRequest(uri, content, LabelsBean.class);
+        });
+    }
+
+    @Override
+    public Future<StorageBean> convertContent(StorageBean storage) {
+        if (log.isInfoEnabled()) {
+            String message = "Converting content to storage representation";
+            log.info(message);
+        }
+
+        // Request
+        return executorService.submit(() -> {
+            URI uri = buildPath(CONVERT_TO_STORAGE_CONTENT).build();
+            return executePostRequest(uri, storage, StorageBean.class);
         });
     }
 

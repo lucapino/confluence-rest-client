@@ -43,5 +43,7 @@ public interface RestPathConstants {
     String CONTENT_LABEL = SPECIFIC_CONTENT + "/label";
 
     String CONTENT_COMMENT = SPECIFIC_CONTENT + "/child/comment";
+    
+    String CONVERT_TO_STORAGE_CONTENT = "/contentbody/convert/storage";
 
 }

@@ -24,6 +24,7 @@ import com.github.lucapino.confluence.rest.core.api.domain.content.ContentBean;
 import com.github.lucapino.confluence.rest.core.api.domain.content.ContentResultsBean;
 import com.github.lucapino.confluence.rest.core.api.domain.content.LabelBean;
 import com.github.lucapino.confluence.rest.core.api.domain.content.LabelsBean;
+import com.github.lucapino.confluence.rest.core.api.domain.content.StorageBean;
 import com.github.lucapino.confluence.rest.core.api.misc.ContentStatus;
 import com.github.lucapino.confluence.rest.core.api.misc.ContentType;
 import java.io.InputStream;
@@ -117,7 +118,7 @@ public interface ContentClient {
      *         created comment. Use this instance to continue working with the comment.
      */
     Future<CommentBean> createComment(CommentBean comment);
-    
+
     /**
      * Updates the provided comment.
      *
@@ -127,7 +128,7 @@ public interface ContentClient {
      *         updated comment. Use this instance to continue working with the comment.
      */
     public Future<CommentBean> updateComment(CommentBean comment);
-    
+
     /**
      * Creates the provided content.
      *
@@ -181,4 +182,16 @@ public interface ContentClient {
      */
     public Future<LabelsBean> addLabels(ContentBean content, List<LabelBean> labels);
 
+    /**
+     * Convert to storage format a piece of content in wiki format.
+     *
+     * @param storage the storage instance to convert.
+     *
+     * @return the converted storage as a {@link StorageBean}
+     *
+     * @see
+     * <a href="https://confluence.atlassian.com/display/DOC/Confluence+Storage+Format">
+     * Confluence Storage Format</a>
+     */
+    public Future<StorageBean> convertContent(StorageBean storage);
 }

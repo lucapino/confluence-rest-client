@@ -265,7 +265,7 @@ public class HttpAuthRequestService extends AbstractRequestService implements Re
         String responseBody = null;
         try {
             if (response.getEntity() != null && response.getEntity().getContent() != null) {
-                responseBody = IOUtils.toString(response.getEntity().getContent());
+                responseBody = IOUtils.toString(response.getEntity().getContent(), "UTF-8");
             }
         } catch (IOException ioe) {
             LOG.warn("Error reading response {}", response);
