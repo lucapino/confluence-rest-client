@@ -22,7 +22,7 @@ limitations under the License.
 
     <groupId>com.github.lucapino</groupId>
     <artifactId>confluence-rest-client</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
     
     <name>Confluence REST Client</name>
@@ -34,7 +34,7 @@ limitations under the License.
         <connection>scm:git:git@github.com:lucapino/confluence-rest-client.git</connection>
         <developerConnection>scm:git:git@github.com:lucapino/confluence-rest-client.git</developerConnection>
         <url>https://github.com/lucapino/confluence-rest-client.git</url>
-        <tag>HEAD</tag>
+        <tag>confluence-rest-client-1.0.1</tag>
     </scm>
     
     
