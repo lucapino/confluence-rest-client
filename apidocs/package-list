@@ -1,0 +1,14 @@
+com.github.lucapino.confluence.rest.client.api
+com.github.lucapino.confluence.rest.client.example
+com.github.lucapino.confluence.rest.client.impl
+com.github.lucapino.confluence.rest.core.api
+com.github.lucapino.confluence.rest.core.api.cql
+com.github.lucapino.confluence.rest.core.api.custom
+com.github.lucapino.confluence.rest.core.api.domain
+com.github.lucapino.confluence.rest.core.api.domain.common
+com.github.lucapino.confluence.rest.core.api.domain.content
+com.github.lucapino.confluence.rest.core.api.domain.cql
+com.github.lucapino.confluence.rest.core.api.domain.space
+com.github.lucapino.confluence.rest.core.api.misc
+com.github.lucapino.confluence.rest.core.api.util
+com.github.lucapino.confluence.rest.core.impl
