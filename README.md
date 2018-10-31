@@ -12,18 +12,18 @@ A simple Java Client to communicate with the Confluence REST API.
 
 Current release: `1.0.0`
 
-This is a reworked version of [ConfluenceRestClient](https://github.com/MartinBoehmer/ConfluenceRestClient).
-Thsi version decouples the HTTP-specific code from the Confluence client code so
+This is a reworked version of [ConfluenceRestClient](https://github.com/MartinBoehmer/ConfluenceRestClient).  
+This version decouples the HTTP-specific code from the Confluence client code so
 that it is possible, for example, to implement the client using other third party libraries, 
-or using a different form of authentication). This version also separates the API
-(now in the xxx.api package) from the implementation (in the xxx.impl package).
+or using a different form of authentication).  
+This version also separates the API (now in the xxx.api package) from the implementation (in the xxx.impl package).
 
 ## Usage
 
-You must first get a RequestService to perform REST calls. 
+You must first get a RequestService to perform REST calls.  
 One called HttpAuthRequestService is provided, which uses Basic HTTP 
-authentication. Then connect using the URI of the Confluence server 
-and your credentials:
+authentication.  
+Then connect using the URI of the Confluence server and your credentials:
 
 ```java
 HttpAuthRequestService requestService = new HttpAuthRequestService();
@@ -62,15 +62,15 @@ ContentBean content = future.get();
 
 ## License
 
-Copyright 2016 Micromata GmbH
-Modifications Copyright 2017 Martin Böhmer
-Modifications Copyright 2017 Mikkel R. Jakobsen
-Modifications Copyright 2017 Luca Tagliani
+Copyright 2016 Micromata GmbH  
+Modifications Copyright 2017 Martin Böhmer  
+Modifications Copyright 2017 Mikkel R. Jakobsen  
+Modifications Copyright 2017-2018 Luca Tagliani
 
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use these files except in compliance with the License.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use these files except in compliance with the License.  
 You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  
 See the License for the specific language governing permissions and limitations under the License.
 
 [Build Status]:https://travis-ci.org/lucapino/confluence-rest-client
