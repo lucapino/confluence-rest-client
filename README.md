@@ -4,6 +4,7 @@ A simple Java Client to communicate with the Confluence REST API.
 
 [![][Build Status img]][Build Status]
 [![][Coverage Status img]][Coverage Status]
+[![][Dependency Status img]][Dependency Status]
 [![][license img]][license]
 [![][Maven Central img]][Maven Central]
 [![][Javadocs img]][Javadocs]
@@ -78,6 +79,9 @@ See the License for the specific language governing permissions and limitations 
 
 [Coverage Status]:https://codecov.io/gh/lucapino/confluence-rest-client
 [Coverage Status img]:https://codecov.io/gh/lucapino/confluence-rest-client/branch/master/graph/badge.svg
+
+[Dependency Status]:https://snyk.io/test/github/lucapino/confluence-rest-client
+[Dependency Status img]:https://snyk.io/test/github/lucapino/confluence-rest-client/badge.svg?style=flat
 
 [license]:LICENSE
 [license img]:https://img.shields.io/badge/license-Apache%202-blue.svg
