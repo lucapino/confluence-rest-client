@@ -321,7 +321,7 @@ limitations under the License.
                     <reportSet>
                         <reports>
                             <report>dependencies</report>
-                            <report>project-team</report>
+                            <report>team</report>
                             <report>cim</report>
                             <report>issue-tracking</report>
                             <report>license</report>
