@@ -21,6 +21,8 @@ import org.apache.http.client.utils.URIBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import org.apache.http.client.utils.URLEncodedUtils;
 
 /**
  * @author Christian Schulze (c.schulze@micromata.de)
@@ -49,7 +51,7 @@ public class URIHelper {
             if (parameterIndicatorPosition >= 0) {
                 String parameters = path.substring(parameterIndicatorPosition + 1);
                 path = path.substring(0, parameterIndicatorPosition);
-                uriBuilder.setQuery(parameters);
+                uriBuilder.setParameters(URLEncodedUtils.parse(parameters, Charset.forName("UTF-8")));
             }
             if (path.startsWith("/")) {
                 basePath = basePath.concat(path);
