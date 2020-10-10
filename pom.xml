@@ -50,7 +50,7 @@ limitations under the License.
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <httpclient.version>4.5.3</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
         <licenses.dir>${project.build.directory}/third-party-licenses</licenses.dir>
         <site.skin.version>1.0.0</site.skin.version>
         <mavenURL>https://maven-badges.herokuapp.com/maven-central/com.github.lucapino/confluence-rest-client</mavenURL>
