@@ -50,7 +50,7 @@ limitations under the License.
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <httpclient.version>4.5.3</httpclient.version>
+        <httpclient.version>4.5.7</httpclient.version>
         <licenses.dir>${project.build.directory}/third-party-licenses</licenses.dir>
         <site.skin.version>1.0.0</site.skin.version>
         <mavenURL>https://maven-badges.herokuapp.com/maven-central/com.github.lucapino/confluence-rest-client</mavenURL>
@@ -401,7 +401,7 @@ limitations under the License.
         <dependency>
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
-            <version>1.6</version>
+            <version>1.7</version>
         </dependency>
         <!-- Logging -->
         <dependency>
