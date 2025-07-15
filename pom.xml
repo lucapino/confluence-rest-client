@@ -386,7 +386,7 @@ limitations under the License.
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.6</version>
+            <version>3.18.0</version>
         </dependency>    
         <dependency>
             <groupId>javax.ws.rs</groupId>
@@ -401,7 +401,7 @@ limitations under the License.
         <dependency>
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
-            <version>1.6</version>
+            <version>1.10.0</version>
         </dependency>
         <!-- Logging -->
         <dependency>
